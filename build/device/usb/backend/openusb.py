@@ -553,8 +553,7 @@ class _OpenUSB(usb.backend.IBackend):
     @methodtrace(_logger)
     def enumerate_devices(self):
         for bus in _BusIterator():
-            for devid in _DevIterator(bus):
-                yield devid
+            yield from _DevIterator(bus)
 
     @methodtrace(_logger)
     def get_device_descriptor(self, dev):

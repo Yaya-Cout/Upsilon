@@ -302,14 +302,14 @@ def get_string(dev, index, langid = None):
     The return value is the unicode string present in the descriptor, or None
     if the requested index was zero.
     """
-    if 0 == index:
+    if index == 0:
         return None
 
     from usb.control import get_descriptor
 
     if langid is None:
         langids = dev.langids
-        if 0 == len(langids):
+        if len(langids) == 0:
             raise ValueError("The device has no langid"
                              " (permission issue, no string descriptors supported or device error)")
         langid = langids[0]

@@ -126,7 +126,7 @@ def write_palette_h(data, file_p):
             if defaults.keys().__contains__(key+sub_key):
                 del defaults[key+sub_key]
 
-    for key in defaults.keys():
+    for key in defaults:
         file_p.write("  constexpr static KDColor " + key + " = KDColor::RGB24(0x" + defaults[key] + ");\n")
 
     file_p.write("  constexpr static KDColor DataColor[] = {Red, Blue, Green, YellowDark, Magenta, Turquoise, Pink, Orange};\n")
@@ -165,7 +165,7 @@ def handle_git(args):
 def handle_theme(args, path):
     data = get_data(args.theme, path)
 
-    if (args.icon):
+    if args.icon:
         # Get the icon in the icon theme folder
         icons = get_icons_list()
 
@@ -179,37 +179,34 @@ def handle_theme(args, path):
             # If no, copy from src
             print(" (!!)   Icon " + icons[args.output.replace(args.build_dir, "")] + " not found in icon theme " + data["icons"] + ". Using default!")
             shutil.copyfile(args.output.replace(args.build_dir, ""), args.output)
+    elif args.stdout:
+        write_palette_h(data, sys.stdout)
     else:
-        if (args.stdout):
-            write_palette_h(data, sys.stdout)
-        else:
-            with open(args.output, "w") as palette_file:
-                write_palette_h(data, palette_file)
+        with open(args.output, "w") as palette_file:
+            write_palette_h(data, palette_file)
 
 
 def main(args):
-    if (args.list):
+    if args.list:
         print(" ==== Local themes ====")
         for file_info in os.listdir(os.path.dirname(os.path.realpath(__file__)) + os.path.sep + "themes" + os.path.sep + "local"):
             if (file_info.endswith(".json")):
                 filename = os.path.splitext(file_info)[0]
                 print(filename)
         sys.exit(0)
-    else:
-        if (args.theme == None or args.repo == None):
-            print("Please specify repo and theme or use --list!", file=sys.stderr)
-            sys.exit(2)
+    elif args.theme is None or args.repo is None:
+        print("Please specify repo and theme or use --list!", file=sys.stderr)
+        sys.exit(2)
 
     if args.repo == "local":
         handle_theme(args, os.path.dirname(os.path.realpath(__file__)) + os.path.sep + "themes" + os.path.sep + "local")
-    else:
-        if check_for_git():
-            if (check_git_remote(args.repo)):
-                handle_git(args)
-            else:
-                sys.exit(5)
+    elif check_for_git():
+        if (check_git_remote(args.repo)):
+            handle_git(args)
         else:
-            sys.exit(6)
+            sys.exit(5)
+    else:
+        sys.exit(6)
 
 
 if __name__ == "__main__":

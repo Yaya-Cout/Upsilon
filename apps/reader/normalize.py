@@ -8,11 +8,9 @@ filename = sys.argv[1]
 
 print("Normalization of "+filename)
 
-output = open(filename+".tmp", "wb")
-
-with io.open(filename, "r", encoding='utf-8') as file:    
-    for line in file:
-        unicodeLine = unicodedata.normalize("NFKD", line)        
-        output.write(unicodeLine.encode("UTF-8"))        
-output.close()
+with open(filename+".tmp", "wb") as output:
+    with io.open(filename, "r", encoding='utf-8') as file:    
+        for line in file:
+            unicodeLine = unicodedata.normalize("NFKD", line)        
+            output.write(unicodeLine.encode("UTF-8"))
 shutil.move(filename+".tmp",filename)

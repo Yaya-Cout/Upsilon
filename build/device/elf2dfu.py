@@ -23,12 +23,12 @@ def loadable_sections(elf_file, address_prefix = ""):
 
 def generate_dfu_file(targets, usb_vid_pid, dfu_file):
   data = b''
-  for t, target in enumerate(targets):
+  for target in targets:
     target_data = b''
     for image in target:
       # Pad the image to 8 bytes, this seems to be needed
       pad = (8 - len(image['data']) % 8 ) % 8
-      image['data'] = image['data'] + bytes(bytearray(8)[0:pad])
+      image['data'] = image['data'] + bytes(bytearray(8)[:pad])
       target_data += struct.pack('<2I', image['address'], len(image['data'])) + image['data']
     target_data = struct.pack('<6sBI255s2I', b'Target', 0, 1, b'ST...', len(target_data), len(target)) + target_data
     data += target_data
@@ -47,7 +47,7 @@ def print_sections(sections):
       print("%s-%s: %s, %s" % (hex(s['lma']), hex(s['lma'] + s['size'] - 1), s['name'], "{:,} bytes".format(s['size'])))
 
 def elf2dfu(elf_file, usb_vid_pid, dfu_file, verbose):
-  external_address_prefix = "9"; # External addresses start with 0x9
+  external_address_prefix = "9"
   # We don't sort sections on their names (.external, .internal) but on their
   # addresses because some sections like dfu_entry_point can either be the
   # internal or the external flash depending on which targets is built (ie
@@ -64,7 +64,7 @@ def elf2dfu(elf_file, usb_vid_pid, dfu_file, verbose):
   for b in blocks:
     name = b['name']
     subprocess.call(["arm-none-eabi-objcopy", "-O", "binary"]+[item for sublist in [["-j", s['name']] for s in b['sections']] for item in sublist]+[elf_file, bin_file(b)])
-    address = min([s['lma'] for s in b['sections']])
+    address = min(s['lma'] for s in b['sections'])
     # We turn ITCM flash addresses to equivalent AXIM flash addresses because
     # ITCM address cannot be written and are physically equivalent to AXIM flash
     # addresses.

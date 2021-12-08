@@ -169,11 +169,7 @@ class _ResourceManager(object):
     def managed_claim_interface(self, device, intf):
         self.managed_open()
 
-        if isinstance(intf, Interface):
-            i = intf.bInterfaceNumber
-        else:
-            i = intf
-
+        i = intf.bInterfaceNumber if isinstance(intf, Interface) else intf
         if i not in self._claimed_intf:
             self.backend.claim_interface(self.handle, i)
             self._claimed_intf.add(i)
@@ -539,11 +535,7 @@ class Interface(object):
                 self.configuration)
 
     def _str(self):
-        if self.bAlternateSetting:
-            alt_setting = ", %d" % self.bAlternateSetting
-        else:
-            alt_setting = ""
-
+        alt_setting = ", %d" % self.bAlternateSetting if self.bAlternateSetting else ""
         return "INTERFACE %d%s: %s" % (self.bInterfaceNumber, alt_setting,
             _try_lookup(_lu.interface_classes, self.bInterfaceClass,
                 default = "Unknown Class"))
@@ -669,16 +661,8 @@ class Configuration(object):
 
     def _get_full_descriptor_str(self):
         headstr = "  " + self._str() + " "
-        if self.bmAttributes & (1<<6):
-            powered = "Self"
-        else:
-            powered = "Bus"
-
-        if self.bmAttributes & (1<<5):
-            remote_wakeup = ", Remote Wakeup"
-        else:
-            remote_wakeup = ""
-
+        powered = "Self" if self.bmAttributes & (1<<6) else "Bus"
+        remote_wakeup = ", Remote Wakeup" if self.bmAttributes & (1<<5) else ""
         return "%s%s\n" % (headstr, "=" * (60 - len(headstr))) + \
         "   %-21s:%#7x (9 bytes)\n" % (
             "bLength", self.bLength) + \
@@ -801,26 +785,14 @@ class Device(_objfinalizer.AutoFinalizedObject):
                 )
             )
 
-        if desc.bus is not None:
-            self.bus = int(desc.bus)
-        else:
-            self.bus = None
-
-        if desc.address is not None:
-            self.address = int(desc.address)
-        else:
-            self.address = None
-
+        self.bus = int(desc.bus) if desc.bus is not None else None
+        self.address = int(desc.address) if desc.address is not None else None
         if desc.port_number is not None:
             self.port_number = int(desc.port_number)
         else:
             self.port_number = None
 
-        if desc.speed is not None:
-            self.speed = int(desc.speed)
-        else:
-            self.speed = None
-
+        self.speed = int(desc.speed) if desc.speed is not None else None
         self._has_parent = None
         self._parent = None
 
@@ -871,10 +843,7 @@ class Device(_objfinalizer.AutoFinalizedObject):
         if self._has_parent is None:
             _parent = self._ctx.backend.get_parent(self._ctx.dev)
             self._has_parent = _parent is not None
-            if self._has_parent:
-                self._parent = Device(_parent, self._ctx.backend)
-            else:
-                self._parent = None
+            self._parent = Device(_parent, self._ctx.backend) if self._has_parent else None
         return self._parent
 
     @property
@@ -1156,16 +1125,8 @@ class Device(_objfinalizer.AutoFinalizedObject):
     def _get_full_descriptor_str(self):
         headstr = self._str() + " "
 
-        if self.bcdUSB & 0xf:
-            low_bcd_usb = str(self.bcdUSB & 0xf)
-        else:
-            low_bcd_usb = ""
-
-        if self.bcdDevice & 0xf:
-            low_bcd_device = str(self.bcdDevice & 0xf)
-        else:
-            low_bcd_device = ""
-
+        low_bcd_usb = str(self.bcdUSB & 0xf) if self.bcdUSB & 0xf else ""
+        low_bcd_device = str(self.bcdDevice & 0xf) if self.bcdDevice & 0xf else ""
         return "%s%s\n" %  (headstr, "=" * (60 - len(headstr))) + \
         " %-23s:%#7x (18 bytes)\n" % (
             "bLength", self.bLength) + \
@@ -1314,12 +1275,12 @@ def show_devices(verbose=False, **kwargs):
     """
     kwargs["find_all"] = True
     devices = find(**kwargs)
-    strings = ""
-    for device in devices:
-        if not verbose:
-            strings +=  "%s, %s\n" % (device._str(), _try_lookup(
-                _lu.device_classes, device.bDeviceClass))
-        else:
-            strings += "%s\n\n" % str(device)
+    strings = "".join(
+        "%s, %s\n"
+        % (device._str(), _try_lookup(_lu.device_classes, device.bDeviceClass))
+        if not verbose
+        else "%s\n\n" % str(device)
+        for device in devices
+    )
 
     return _DescriptorInfo(strings)

@@ -117,11 +117,7 @@ def load_library(lib, name=None, lib_cls=None):
         else:
             return ctypes.CDLL(lib)
     except Exception:
-        if name:
-            lib_msg = '%s (%s)' % (name, lib)
-        else:
-            lib_msg = lib
-
+        lib_msg = '%s (%s)' % (name, lib) if name else lib
         lib_msg += ' could not be loaded'
 
         if sys.platform == 'cygwin':
@@ -158,12 +154,11 @@ def load_locate_library(candidates, cygwin_lib, name,
     * LibraryNotLoadedException
     * LibraryMissingSymbolsException
     """
-    if sys.platform == 'cygwin':
-        if cygwin_lib:
-            loaded_lib = load_library(cygwin_lib, name, cygwin_cls)
-        else:
-            raise NoLibraryCandidatesException(name)
-    elif candidates:
+    if sys.platform == 'cygwin' and cygwin_lib:
+        loaded_lib = load_library(cygwin_lib, name, cygwin_cls)
+    elif sys.platform == 'cygwin' or not candidates:
+        raise NoLibraryCandidatesException(name)
+    else:
         lib = locate_library(candidates, find_library)
         if lib:
             if sys.platform == 'win32':
@@ -173,9 +168,6 @@ def load_locate_library(candidates, cygwin_lib, name,
         else:
             _LOGGER.error('%r could not be found', (name or candidates))
             raise LibraryNotFoundException(name)
-    else:
-        raise NoLibraryCandidatesException(name)
-
     if loaded_lib is None:
         raise LibraryNotLoadedException(name)
     elif check_symbols:

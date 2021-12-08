@@ -38,14 +38,11 @@ def print_mapping_footer(f):
     f.write("#endif\n")
 
 def print(files, path, print_header, print_footer, process_asset):
-    f = open(path, "w")
-    print_header(f)
-    identifier = 1000
-    for asset in files:
-        process_asset(f, asset, identifier)
-        identifier += 1
-    print_footer(f)
-    f.close()
+    with open(path, "w") as f:
+        print_header(f)
+        for identifier, asset in enumerate(files, start=1000):
+            process_asset(f, asset, identifier)
+        print_footer(f)
 
 
 if (args.o.endswith(".rc")):

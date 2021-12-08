@@ -279,11 +279,7 @@ def _load_library(find_library=None):
     # On FreeBSD 8/9, libusb 1.0 and libusb 0.1 are in the same shared
     # object libusb.so, so if we found libusb library name, we must assure
     # it is 1.0 version. We just try to get some symbol from 1.0 version
-    if sys.platform == 'win32':
-        win_cls = WinDLL
-    else:
-        win_cls = None
-
+    win_cls = WinDLL if sys.platform == 'win32' else None
     return usb.libloader.load_locate_library(
                 ('usb-1.0', 'libusb-1.0', 'usb'),
                 'cygusb-1.0.dll', 'Libusb 1',
@@ -691,8 +687,8 @@ class _IsoTransferHandler(_objfinalizer.AutoFinalizedObject):
         return self.__compute_size_transf_data()
 
     def __compute_size_transf_data(self):
-        return sum([t.actual_length for t in
-                    _get_iso_packet_list(self.transfer.contents)])
+        return sum(t.actual_length for t in
+                        _get_iso_packet_list(self.transfer.contents))
 
     def __set_packets_length(self, n, packet_length):
         _lib.libusb_set_iso_packet_lengths(self.transfer, packet_length)
@@ -758,10 +754,7 @@ class _LibUSB(usb.backend.IBackend):
             buff = (c_uint8 * 7)()  # USB 3.0 maximum depth is 7
             written = dev_desc.port_numbers = self.lib.libusb_get_port_numbers(
                     dev.devid, buff, len(buff))
-            if written > 0:
-                dev_desc.port_numbers = tuple(buff[:written])
-            else:
-                dev_desc.port_numbers = None
+            dev_desc.port_numbers = tuple(buff[:written]) if written > 0 else None
         except AttributeError:
             dev_desc.port_numbers = None
 
@@ -890,7 +883,7 @@ class _LibUSB(usb.backend.IBackend):
         addr, length = data.buffer_info()
         length *= data.itemsize
 
-        ret = _check(self.lib.libusb_control_transfer(
+        return _check(self.lib.libusb_control_transfer(
                                         dev_handle.handle,
                                         bmRequestType,
                                         bRequest,
@@ -899,8 +892,6 @@ class _LibUSB(usb.backend.IBackend):
                                         cast(addr, POINTER(c_ubyte)),
                                         length,
                                         timeout))
-
-        return ret
 
     @methodtrace(_logger)
     def clear_halt(self, dev_handle, ep):

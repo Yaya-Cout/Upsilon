@@ -27,8 +27,8 @@ def row_for_elf(elf, requested_section_prefixes):
   for prefix in requested_section_prefixes:
     for s in sections:
       section_name = s['name']
-      if s['name'].startswith(prefix):
-        if not prefix in result:
+      if section_name.startswith(prefix):
+        if prefix not in result:
           result[prefix] = 0
         result[prefix] += s['size']
   return result
@@ -132,9 +132,8 @@ for i,filename in enumerate(args.files):
   values = row_for_elf(filename, args.sections)
   for custom_section in args.custom:
     if (len(custom_section) >= 2):
-      custom_section_size = 0
-      for i in range(len(custom_section) - 1):
-         custom_section_size += values[custom_section[i + 1]]
+      custom_section_size = sum(values[custom_section[i + 1]]
+                                for i in range(len(custom_section) - 1))
       values[custom_section[0]] = custom_section_size
   table.append({'label': label, 'values': values})
 formatted_table = format_table(table)
