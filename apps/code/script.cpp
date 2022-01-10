@@ -75,7 +75,7 @@ uint8_t * StatusFromData(Script::Data d) {
 uint16_t * Script::CursorPosition() {
   assert(!isNull());
   Data d = value();
-  return (uint16_t *)StatusFromData(d) + StatusSize();
+  return (uint16_t *)(StatusFromData(d) + StatusSize());
 }
 void Script::setCursorPosition(uint16_t position) {
   assert(!isNull());
