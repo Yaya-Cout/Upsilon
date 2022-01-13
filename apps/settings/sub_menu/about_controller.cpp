@@ -43,7 +43,6 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
       return true;
     }
     // Easter egg is enabled here by pressing 6 on the Upsilon Version
-    // if (event == Ion::Events::shiftalphaans) {
     if (childLabel == I18n::Message::UpsilonVersion) {
       if (Ion::ExamMode::FetchExamMode() == 0) { // If exam mode is off, update the LED color
         if (Ion::LED::getColor() == Palette::Toolbar) { // If the led is already on, use the default color
@@ -130,7 +129,7 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
           int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 5);
           batteryLevel[batteryLen] = '%';
           batteryLevel[batteryLen+1] = '\0';
-        }else{
+        } else{
           int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 5, Poincare::Preferences::PrintFloatMode::Decimal, 3);
           batteryLevel[batteryLen] = 'V';
           batteryLevel[batteryLen+1] = '\0';
