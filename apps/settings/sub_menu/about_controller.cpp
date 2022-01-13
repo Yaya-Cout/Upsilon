@@ -35,11 +35,25 @@ AboutController::AboutController(Responder * parentResponder) :
 
 bool AboutController::handleEvent(Ion::Events::Event event) {
   I18n::Message childLabel = m_messageTreeModel->childAtIndex(selectedRow()+(!hasUsernameCell()))->label();
-  /* We hide here the activation hardware test app: in the menu "about", by
-   * clicking on '6' on the last row. */
-  if ((event == Ion::Events::Six || event == Ion::Events::LowerT || event == Ion::Events::UpperT) && childLabel == I18n::Message::FccId) {
-    Container::activeApp()->displayModalViewController(&m_hardwareTestPopUpController, 0.f, 0.f, Metric::ExamPopUpTopMargin, Metric::PopUpRightMargin, Metric::ExamPopUpBottomMargin, Metric::PopUpLeftMargin);
-    return true;
+  if (event == Ion::Events::Six || event == Ion::Events::LowerT || event == Ion::Events::UpperT) {
+    /* We hide here the activation hardware test app: in the menu "about", by
+    * clicking on '6' on the last row. */
+    if (childLabel == I18n::Message::FccId) {
+      Container::activeApp()->displayModalViewController(&m_hardwareTestPopUpController, 0.f, 0.f, Metric::ExamPopUpTopMargin, Metric::PopUpRightMargin, Metric::ExamPopUpBottomMargin, Metric::PopUpLeftMargin);
+      return true;
+    }
+    // Easter egg is enabled here by pressing 6 on the Upsilon Version
+    // if (event == Ion::Events::shiftalphaans) {
+    if (childLabel == I18n::Message::UpsilonVersion) {
+      if (Ion::ExamMode::FetchExamMode() == 0) { // If exam mode is off, update the LED color
+        if (Ion::LED::getColor() == Palette::Toolbar) { // If the led is already on, use the default color
+          Ion::LED::updateColorWithPlugAndCharge();
+        }
+        else { // Else set the led color to the toolbar color (The Upsilon color)
+          Ion::LED::setColor(Palette::Toolbar);
+        }
+      }
+    }
   }
   if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
     if (childLabel == I18n::Message::Contributors) {
@@ -84,29 +98,29 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
       }
       if (childLabel == I18n::Message::MemUse) {
         MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)m_selectableTableView.selectedCell();
-        
+
         char memUseBuffer[15];
-        
+
         if (strchr(myCell->accessoryText(), '%') == NULL) {
           int len = Poincare::Integer((int)((float)(Ion::Storage::k_storageSize - Ion::Storage::sharedStorage()->availableSize()) / (float)(Ion::Storage::k_storageSize) * 100.0f)).serialize(memUseBuffer, 4);
           memUseBuffer[len] = '%';
           memUseBuffer[len+1] = '\0';
-          
+
           myCell->setAccessoryText(memUseBuffer);
         } else {
           int len = Poincare::Integer((int)((float) (Ion::Storage::k_storageSize - Ion::Storage::sharedStorage()->availableSize()) / 1024.f)).serialize(memUseBuffer, 4);
           memUseBuffer[len] = 'k';
           memUseBuffer[len+1] = 'B';
           memUseBuffer[len+2] = '/';
-          
+
           len = Poincare::Integer((int)((float) Ion::Storage::k_storageSize / 1024.f)).serialize(memUseBuffer + len + 3, 4) + len + 3;
           memUseBuffer[len] = 'k';
           memUseBuffer[len+1] = 'B';
           memUseBuffer[len+2] = '\0';
-          
+
           myCell->setAccessoryText(memUseBuffer);
         }
-        
+
         return true;
       }
       if(childLabel == I18n::Message::Battery){
@@ -178,12 +192,12 @@ void AboutController::willDisplayCellForIndex(HighlightCell * cell, int index) {
     memUseBuffer[len] = 'k';
     memUseBuffer[len+1] = 'B';
     memUseBuffer[len+2] = '/';
-    
+
     len = Poincare::Integer((int)((float) Ion::Storage::k_storageSize / 1024.f)).serialize(memUseBuffer + len + 3, 4) + len + 3;
     memUseBuffer[len] = 'k';
     memUseBuffer[len+1] = 'B';
     memUseBuffer[len+2] = '\0';
-    
+
     MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)cell;
     myCell->setAccessoryText(memUseBuffer);
   } else {
