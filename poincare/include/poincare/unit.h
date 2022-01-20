@@ -113,7 +113,7 @@ public:
     virtual bool isBaseUnit() const { return false; }
     virtual const Representative * standardRepresentative(double value, double exponent, ExpressionNode::ReductionContext reductionContext, const Prefix * * prefix) const { return DefaultFindBestRepresentative(value, exponent, representativesOfSameDimension(), numberOfRepresentatives(), prefix); }
     /* hasSpecialAdditionalExpressions return true if the unit has special
-     * forms suchas as splits (for time and imperial units) or common
+     * forms such as as splits (for time and imperial units) or common
      * conversions (such as speed and energy). */
     virtual bool hasSpecialAdditionalExpressions(double value, Preferences::UnitFormat unitFormat) const { return false; }
     virtual int setAdditionalExpressions(double value, Expression * dest, int availableLength, ExpressionNode::ReductionContext reductionContext) const { return 0; }
@@ -494,7 +494,7 @@ constexpr bool strings_equal(const char * s1, const char * s2) { return *s1 == *
 class Unit : public Expression {
   friend class UnitNode;
 public:
-  /* Prefixes and Representativees defined below must be defined only once and
+  /* Prefixes and Representatives defined below must be defined only once and
    * all units must be constructed from their pointers. This way we can easily
    * check if two Unit objects are equal by comparing pointers. This saves us
    * from overloading the == operator on Prefix and Representative and saves
@@ -613,7 +613,7 @@ public:
     VolumeRepresentative("gal", 128*0.0000295735295625, Prefixable::None, Prefixable::None),
   };
   /* FIXME : Some ratio are too precise too be well approximated by double.
-   * Maybe switch to a rationnal representation with two int. */
+   * Maybe switch to a rational representation with two int. */
 
   /* Define access points to some prefixes and representatives. */
   static constexpr int k_emptyPrefixIndex = 6;
