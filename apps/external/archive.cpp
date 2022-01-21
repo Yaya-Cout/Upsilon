@@ -5,10 +5,64 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifndef DEVICE
+#include <stdio.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 namespace External {
 namespace Archive {
 
+// Shared functions
+int indexFromName(const char *name) {
+  File entry;
+
+  for (int i = 0; fileAtIndex(i, entry); i++) {
+    if (strcmp(name, entry.name) == 0) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+bool executableAtIndex(size_t index, File &entry) {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    if (dummy.isExecutable) {
+      if (final_count == index) {
+        entry.name = dummy.name;
+        entry.data = dummy.data;
+        entry.dataLength = dummy.dataLength;
+        entry.isExecutable = dummy.isExecutable;
+        return true;
+      }
+      final_count++;
+    }
+  }
+
+  return false;
+}
+
+size_t numberOfExecutables() {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++)
+    if (dummy.isExecutable)
+      final_count++;
+
+  return final_count;
+}
+
 #ifdef DEVICE
+// Device functions
 
 struct TarHeader
 {                              /* byte offset */
@@ -111,18 +165,6 @@ uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   return -1;
 }
 
-int indexFromName(const char *name) {
-  File entry;
-
-  for (int i = 0; fileAtIndex(i, entry); i++) {
-    if (strcmp(name, entry.name) == 0) {
-      return i;
-    }
-  }
-
-  return -1;
-}
-
 size_t numberOfFiles() {
   File dummy;
   size_t count;
@@ -132,78 +174,99 @@ size_t numberOfFiles() {
   return count;
 }
 
-bool executableAtIndex(size_t index, File &entry) {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++) {
-    if (dummy.isExecutable) {
-      if (final_count == index) {
-        entry.name = dummy.name;
-        entry.data = dummy.data;
-        entry.dataLength = dummy.dataLength;
-        entry.isExecutable = dummy.isExecutable;
-        return true;
-      }
-      final_count++;
-    }
-  }
-  
-  return false;
-}
-
-size_t numberOfExecutables() {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++)
-    if (dummy.isExecutable)
-      final_count++;
-
-  return final_count;
-}
-
-
 
 #else
+// Simulator functions
 
 bool fileAtIndex(size_t index, File &entry) {
-  if (index != 0)
+  // Check if index is between 0 and the number of files
+  if ((size_t)0 > index)
     return false;
-  
-  entry.name = "Built-in";
-  entry.data = NULL;
-  entry.dataLength = 0;
-  entry.isExecutable = true;
-  return true;
-}
+  if (index >= numberOfFiles())
+    return false;
 
-bool executableAtIndex(size_t index, File &entry) {
-  return fileAtIndex(index, entry);
-}
+  DIR *d = opendir(".");
+  if (d) {
+    size_t nb = 0;
+    dirent *file;
+    while ((file = readdir(d)) != NULL) {
+      // Allow only files
+      if (file->d_type != (unsigned char)8)
+        continue;
+      // If the index is equal to the actual file
+      if (nb == index) {
+        // Set name
+        entry.name = (const char * )file->d_name;
+        // Initialize default values
+        entry.data = nullptr;
+        entry.dataLength = 0;
 
-size_t numberOfExecutables() {
-  return 1;
+        struct stat info;
+        if (stat(entry.name, &info) != 0) {
+          // Close the directory and return false
+          closedir(d);
+          return false;
+        }
+
+        unsigned char* content = new unsigned char[info.st_size];
+        if (content == NULL) {
+          // Close the directory and return false
+          closedir(d);
+          return false;
+        }
+        // Open file
+        FILE *fp = fopen(entry.name, "rb");
+        if (fp == NULL) {
+          // Close the directory and return false
+          closedir(d);
+          return false;
+        }
+        // Copy content of file to content variable
+        fread(content, info.st_size, 1, fp);
+        // Close file
+        fclose(fp);
+        // Save data to their corresponding variables
+        entry.data = content;
+        entry.dataLength = info.st_size;
+        // Check if file is executable
+        entry.isExecutable = (!access(entry.name, X_OK));
+        // Close the directory and quit the function because the file have been found
+        closedir(d);
+        return true;
+      }
+      // Increase the position
+      nb++;
+    }
+  }
+  // This code shouldn't be executed
+  closedir(d); // Close the directory
+  assert(false); // This should already have been checked at start of this function
+  return false;
 }
 
 extern "C" void extapp_main(void);
 
+// TODO: Execute the file instead of the built-in default application
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   extapp_main();
   return 0;
 }
 
-int indexFromName(const char *name) {
-  if (strcmp(name, "Built-in") == 0)
-    return 0;
-  else
-    return -1;
-}
-
 size_t numberOfFiles() {
-  return 1;
+  DIR *d = opendir(".");
+  int nb = 0;
+  // FIXME: d is sometimes equal to nullptr unexpectedly
+  if (d) {
+    dirent *file;
+    while ((file = readdir(d)) != NULL) {
+        // Allow only files
+        if (file->d_type != (unsigned char)8)
+          continue;
+        nb++;
+    }
+  }
+  closedir(d);
+  return nb;
 }
 
 #endif
