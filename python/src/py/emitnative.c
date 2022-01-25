@@ -574,7 +574,7 @@ STATIC void emit_native_start_pass(emit_t *emit, pass_kind_t pass, scope_t *scop
             if (emit->pass == MP_PASS_CODE_SIZE) {
                 // Commit to the encoding size based on the value of prelude_offset in this pass.
                 // By using 32768 as the cut-off it is highly unlikely that prelude_offset will
-                // grow beyond 65535 by the end of this pass, and so require the larger encoding.
+                // grow beyond 65535 by the end of thiss pass, and so require the larger encoding.
                 emit->prelude_offset_uses_u16_encoding = emit->prelude_offset < 32768;
             }
             if (emit->prelude_offset_uses_u16_encoding) {
@@ -874,7 +874,7 @@ STATIC vtype_kind_t load_reg_stack_imm(emit_t *emit, int reg_dest, const stack_i
     }
 }
 
-// Copies all unsettled registers and immediate that are Python values into the
+// Copies all unsettled registers and immediates that are Python values into the
 // concrete Python stack.  This ensures the concrete Python stack holds valid
 // values for the current stack_size.
 // This function may clobber REG_TEMP1.
@@ -1070,7 +1070,7 @@ STATIC void emit_get_stack_pointer_to_reg_for_pop(emit_t *emit, mp_uint_t reg_de
         }
     }
 
-    // Adjust the stack for a pop of n_pop items, and load the stack pointer into reg_dest.
+    // Adujust the stack for a pop of n_pop items, and load the stack pointer into reg_dest.
     adjust_stack(emit, -n_pop);
     emit_native_mov_reg_state_addr(emit, reg_dest, emit->stack_start + emit->stack_size);
 }
@@ -1560,6 +1560,7 @@ STATIC void emit_native_load_subscr(emit_t *emit) {
             int reg_base = REG_ARG_1;
             int reg_index = REG_ARG_2;
             emit_pre_pop_reg_flexible(emit, &vtype_base, &reg_base, reg_index, reg_index);
+            need_reg_single(emit, REG_RET, 0);
             switch (vtype_base) {
                 case VTYPE_PTR8: {
                     // pointer to 8-bit memory
@@ -1623,6 +1624,7 @@ STATIC void emit_native_load_subscr(emit_t *emit) {
             int reg_index = REG_ARG_2;
             emit_pre_pop_reg_flexible(emit, &vtype_index, &reg_index, REG_ARG_1, REG_ARG_1);
             emit_pre_pop_reg(emit, &vtype_base, REG_ARG_1);
+            need_reg_single(emit, REG_RET, 0);
             if (vtype_index != VTYPE_INT && vtype_index != VTYPE_UINT) {
                 EMIT_NATIVE_VIPER_TYPE_ERROR(emit,
                     MP_ERROR_TEXT("can't load with '%q' index"), vtype_to_qstr(vtype_index));

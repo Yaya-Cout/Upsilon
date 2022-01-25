@@ -5,6 +5,11 @@
 /* MicroPython configuration options
  * We're not listing the default options as defined in mpconfig.h */
 
+// Whether to encode None/False/True as immediate objects instead of pointers to
+// real objects.  Reduces code size by a decent amount without hurting
+// performance, for all representations except D on some architectures.
+#define MICROPY_OBJ_IMMEDIATE_OBJS 0
+
 // Enable a PyStack where most objects are allocated instead of always using the heap
 /* This enables to allocate and free memory in a scope (thus, Python can call
  * Python) but also has the collateral effect of removing bugs regarding
