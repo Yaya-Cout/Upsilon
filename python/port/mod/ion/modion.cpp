@@ -106,14 +106,6 @@ mp_obj_t modion_get_keys() {
   return result;
 }
 
-mp_obj_t modion_suspend(){
-  micropython_port_interrupt_if_needed();
-  AppsContainer::sharedAppsContainer()->suspend(false);
-  AppsContainer::sharedAppsContainer()->redrawWindow(true);
-  micropython_port_interrupt_if_needed();
-  return mp_const_none;
-}
-
 mp_obj_t modion_set_brightness(mp_obj_t brightness_mp){
   uint8_t brightness = static_cast<uint8_t>(mp_obj_get_int(brightness_mp));
   GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(brightness);
