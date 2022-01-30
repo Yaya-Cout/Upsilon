@@ -30,8 +30,9 @@ bool BacklightDimmingTimer::fire() {
 }
 
 void BacklightDimmingTimer::reset(uint32_t NewPeriod) {
-  if(NewPeriod != -1){
-    m_period = NewPeriod;
+  if(NewPeriod != (uint32_t)-1){
+    // m_period = NewPeriod;
+    k_idleBeforeDimmingDuration = NewPeriod * Timer::TickDuration;
   }
   m_dimerExecutions = 0;
   m_period = k_idleBeforeDimmingDuration / Timer::TickDuration;
