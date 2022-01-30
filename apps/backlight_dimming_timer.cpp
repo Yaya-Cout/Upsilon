@@ -2,11 +2,12 @@
 #include "global_preferences.h"
 
 BacklightDimmingTimer::BacklightDimmingTimer() :
-  Timer(k_idleBeforeDimmingDuration/Timer::TickDuration)
+  Timer(GlobalPreferences::sharedGlobalPreferences()->idleBeforeDimmingSeconds()*1000/Timer::TickDuration)
 {
 }
 
 bool BacklightDimmingTimer::fire() {
+  k_dimBacklightBrightness = GlobalPreferences::sharedGlobalPreferences()->dimBacklightBrightness();
   if (m_dimerExecutions == 0) {
     m_brightnessLevel = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
     m_dimerSteps = m_brightnessLevel / decreaseBy;
@@ -28,7 +29,10 @@ bool BacklightDimmingTimer::fire() {
   return false;
 }
 
-void BacklightDimmingTimer::reset() {
+void BacklightDimmingTimer::reset(uint32_t NewPeriod) {
+  if(NewPeriod != -1){
+    m_period = NewPeriod;
+  }
   m_dimerExecutions = 0;
   m_period = k_idleBeforeDimmingDuration / Timer::TickDuration;
   resetTimer();
