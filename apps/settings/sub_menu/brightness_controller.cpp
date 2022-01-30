@@ -20,27 +20,12 @@ BrightnessController::BrightnessController(Responder * parentResponder, InputEve
   m_editableCellIdleBeforeSuspendSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_BrightnessShortcutCell(&m_selectableTableView, inputEventHandlerDelegate, this)
 {
-  m_editableCellIdleBeforeDimmingSeconds.messageTableCellWithEditableText()->setMessage(I18n::Message::IdleTimeBeforeDimming);
-  m_editableCellIdleBeforeDimmingSeconds.messageTableCellWithEditableText()->setMessageFont(KDFont::LargeFont);
-  m_editableCellIdleBeforeSuspendSeconds.messageTableCellWithEditableText()->setMessage(I18n::Message::IdleTimeBeforeSuspend);
-  m_editableCellIdleBeforeSuspendSeconds.messageTableCellWithEditableText()->setMessageFont(KDFont::LargeFont);
-  m_BrightnessShortcutCell.messageTableCellWithEditableText()->setMessage(I18n::Message::BrightnessShortcut);
-  m_BrightnessShortcutCell.messageTableCellWithEditableText()->setMessageFont(KDFont::LargeFont);
-}
-
-KDCoordinate BrightnessController::rowHeight(int j) {
-/*   if (j == numberOfRows()-1) {
-    return Metric::ParameterCellHeight+MessageTableCellWithEditableTextWithSeparator::k_margin;
-  } */
-  return Metric::ParameterCellHeight;
-}
-
-KDCoordinate BrightnessController::cumulatedHeightFromIndex(int j) {
-  return TableViewDataSource::cumulatedHeightFromIndex(j);
-}
-
-int BrightnessController::indexFromCumulatedHeight(KDCoordinate offsetY) {
-  return TableViewDataSource::indexFromCumulatedHeight(offsetY);
+  m_editableCellIdleBeforeDimmingSeconds.setMessage(I18n::Message::IdleTimeBeforeDimming);
+  m_editableCellIdleBeforeDimmingSeconds.setMessageFont(KDFont::LargeFont);
+  m_editableCellIdleBeforeSuspendSeconds.setMessage(I18n::Message::IdleTimeBeforeSuspend);
+  m_editableCellIdleBeforeSuspendSeconds.setMessageFont(KDFont::LargeFont);
+  m_BrightnessShortcutCell.setMessage(I18n::Message::BrightnessShortcut);
+  m_BrightnessShortcutCell.setMessageFont(KDFont::LargeFont);
 }
 
 HighlightCell * BrightnessController::reusableCell(int index, int type) {
@@ -64,10 +49,6 @@ int BrightnessController::reusableCellCount(int type) {
   }
 }
 
-int BrightnessController::typeAtLocation(int i, int j) {
-  return (j < numberOfRows() ? 1 : 0);
-}
-
 void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int index) {
   if(index == 0){
     MessageTableCellWithGauge * myGaugeCell = (MessageTableCellWithGauge *)cell;
@@ -75,8 +56,8 @@ void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int ind
     myGauge->setLevel((float)GlobalPreferences::sharedGlobalPreferences()->dimBacklightBrightness()/(float)Ion::Backlight::MaxBrightness);
     return;
   } else {
-    MessageTableCellWithEditableTextWithSeparator * myCell = (MessageTableCellWithEditableTextWithSeparator *)cell;
-    GenericSubController::willDisplayCellForIndex(myCell->messageTableCellWithEditableText(), index);
+    MessageTableCellWithEditableText * myCell = (MessageTableCellWithEditableText *)cell;
+    GenericSubController::willDisplayCellForIndex(myCell, index);
     char buffer[5];
     int val;
     switch(index){
@@ -96,7 +77,7 @@ void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int ind
         assert(false);
     }
     Poincare::Integer(val).serialize(buffer, 5);
-    myCell->messageTableCellWithEditableText()->setAccessoryText(buffer);
+    myCell->setAccessoryText(buffer);
   }
 }
 
@@ -125,17 +106,17 @@ bool BrightnessController::textFieldDidFinishEditing(TextField * textField, cons
   switch (selectedRow()) {
     case 1:
       GlobalPreferences::sharedGlobalPreferences()->setIdleBeforeDimmingSeconds(val);
-      m_editableCellIdleBeforeDimmingSeconds.messageTableCellWithEditableText()->setAccessoryText(text);
+      m_editableCellIdleBeforeDimmingSeconds.setAccessoryText(text);
       break;
     case 2:
       GlobalPreferences::sharedGlobalPreferences()->setIdleBeforeSuspendSeconds(val);
-      m_editableCellIdleBeforeSuspendSeconds.messageTableCellWithEditableText()->setAccessoryText(text);
+      m_editableCellIdleBeforeSuspendSeconds.setAccessoryText(text);
       break;
     case 3:{
       if(val > GlobalPreferences::NumberOfBrightnessStates){ val = GlobalPreferences::NumberOfBrightnessStates;
       } else if (val < 0){val = 0;}
       GlobalPreferences::sharedGlobalPreferences()->setBrightnessShortcut(val);
-      m_BrightnessShortcutCell.messageTableCellWithEditableText()->setAccessoryText(text);
+      m_BrightnessShortcutCell.setAccessoryText(text);
       break;
     }
     default:
