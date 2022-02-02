@@ -20,12 +20,13 @@ public:
   bool textFieldShouldFinishEditing(TextField * textField, Ion::Events::Event event) override;
   bool textFieldDidFinishEditing(TextField * textField, const char * text, Ion::Events::Event event) override;
 protected:
-  constexpr static int k_totalNumberOfCell = 4;
+  constexpr static int k_totalNumberOfCell = 5;
 private:
   MessageTableCellWithGauge m_dimBrightnessCell;
   MessageTableCellWithEditableText m_editableCellIdleBeforeDimmingSeconds;
   MessageTableCellWithEditableText m_editableCellIdleBeforeSuspendSeconds;
-  MessageTableCellWithEditableText m_BrightnessShortcutCell;
+  MessageTableCellWithEditableText m_brightnessShortcutCell;
+  MessageTableCellWithEditableText m_dimmerDurationCell;
 };
 
 }

@@ -53,6 +53,8 @@ public:
   void setIdleBeforeDimmingSeconds(int m_idleBeforeDimmingSeconds);
   int BrightnessShortcut() const { return m_BrightnessShortcut; }
   void setBrightnessShortcut(int m_BrightnessShortcut);
+  int dimmerDuration() const { return m_DimmerDuration; }
+  void setDimmerDuration(int DimmerDuration) { m_DimmerDuration = DimmerDuration; }
 private:
   static_assert(I18n::NumberOfLanguages > 0, "I18n::NumberOfLanguages is not superior to 0"); // There should already have been an error when processing an empty EPSILON_I18N flag
   static_assert(I18n::NumberOfCountries > 0, "I18n::NumberOfCountries is not superior to 0"); // There should already have been an error when processing an empty EPSILON_COUNTRIES flag
@@ -72,6 +74,7 @@ private:
     m_idleBeforeSuspendSeconds(300),
     m_idleBeforeDimmingSeconds(30),
     m_BrightnessShortcut(4),
+    m_DimmerDuration(4),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
   I18n::Country m_country;
@@ -90,6 +93,7 @@ private:
   int m_idleBeforeSuspendSeconds;
   int m_idleBeforeDimmingSeconds;
   int m_BrightnessShortcut;
+  int m_DimmerDuration;
   const KDFont * m_font;
 };
 

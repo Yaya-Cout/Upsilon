@@ -10,10 +10,10 @@ public:
   void reset(uint32_t NewPeriod = -1);
 private:
   constexpr static int decreaseBy = 15;
-  constexpr static int decreasetime = 1*1000; // In miliseconds
   int m_dimerExecutions = 0;
-  int k_dimBacklightBrightness;
-  int k_idleBeforeDimmingDuration; // In miliseconds
+  int m_dimBacklightBrightness;
+  int m_idleBeforeDimmingDuration; // In miliseconds
+  int m_decreasetime; // In miliseconds
   int m_brightnessLevel;
   int m_dimerSteps;
   int m_nextbrightness;
