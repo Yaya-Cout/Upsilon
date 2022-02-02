@@ -41,7 +41,11 @@ void GlobalPreferences::setBrightnessLevel(int brightnessLevel) {
     brightnessLevel = brightnessLevel < 0 ? 0 : brightnessLevel;
     brightnessLevel = brightnessLevel > Ion::Backlight::MaxBrightness ? Ion::Backlight::MaxBrightness : brightnessLevel;
     m_brightnessLevel = brightnessLevel;
+    // Ensure that the dimmed brightness level is lower than the normal brightness level
     Ion::Backlight::setBrightness(m_brightnessLevel);
+    if (dimBacklightBrightness() > brightnessLevel) {
+      setDimBacklightBrightness(brightnessLevel);
+    }
   }
 }
 
@@ -50,6 +54,10 @@ void GlobalPreferences::setDimBacklightBrightness(int dimBacklightBrightness) {
     dimBacklightBrightness = dimBacklightBrightness < 0 ? 0 : dimBacklightBrightness;
     dimBacklightBrightness = dimBacklightBrightness > Ion::Backlight::MaxBrightness ? Ion::Backlight::MaxBrightness : dimBacklightBrightness;
     m_dimBacklightBrightness = dimBacklightBrightness;
+    // Ensure that the dimmed brightness level is lower or equal than the normal brightness level
+    if (brightnessLevel() <= dimBacklightBrightness) {
+      setBrightnessLevel(dimBacklightBrightness);
+    }
   }
 }
 
