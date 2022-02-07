@@ -82,6 +82,7 @@ Controller::Controller(Responder * parentResponder, SelectableTableViewDataSourc
       External::Archive::File image;
       External::Archive::fileAtIndex(index, image);
       m_view.backgroundView()->setBackgroundImage(image.data);
+      // FIXME: The memory should be desallocated on the simulator but it made that Escher crash
     }
 #endif
 }

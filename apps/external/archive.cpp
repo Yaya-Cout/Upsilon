@@ -15,52 +15,6 @@
 namespace External {
 namespace Archive {
 
-// Shared functions
-int indexFromName(const char *name) {
-  File entry;
-
-  for (int i = 0; fileAtIndex(i, entry); i++) {
-    if (strcmp(name, entry.name) == 0) {
-      return i;
-    }
-  }
-
-  return -1;
-}
-
-bool executableAtIndex(size_t index, File &entry) {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++) {
-    if (dummy.isExecutable) {
-      if (final_count == index) {
-        entry.name = dummy.name;
-        entry.data = dummy.data;
-        entry.dataLength = dummy.dataLength;
-        entry.isExecutable = dummy.isExecutable;
-        return true;
-      }
-      final_count++;
-    }
-  }
-
-  return false;
-}
-
-size_t numberOfExecutables() {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++)
-    if (dummy.isExecutable)
-      final_count++;
-
-  return final_count;
-}
-
 #ifdef DEVICE
 // Device functions
 
@@ -165,6 +119,18 @@ uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   return -1;
 }
 
+int indexFromName(const char *name) {
+  File entry;
+
+  for (int i = 0; fileAtIndex(i, entry); i++) {
+    if (strcmp(name, entry.name) == 0) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 size_t numberOfFiles() {
   File dummy;
   size_t count;
@@ -174,14 +140,105 @@ size_t numberOfFiles() {
   return count;
 }
 
+bool executableAtIndex(size_t index, File &entry) {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    if (dummy.isExecutable) {
+      if (final_count == index) {
+        entry.name = dummy.name;
+        entry.data = dummy.data;
+        entry.dataLength = dummy.dataLength;
+        entry.isExecutable = dummy.isExecutable;
+        return true;
+      }
+      final_count++;
+    }
+  }
+
+  return false;
+}
+
+size_t numberOfExecutables() {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++)
+    if (dummy.isExecutable)
+      final_count++;
+
+  return final_count;
+}
 
 #else
 // Simulator functions
 
+int indexFromName(const char *name) {
+  File entry;
+  // Enable returnFilename because of the memory is desallocated after
+  for (int i = 0; fileAtIndex(i, entry); i++) {
+    delete[] entry.data;
+    if (strcmp(name, entry.name) == 0) {
+      // Desallocate memory to prevent memory leak
+      free(const_cast<char *>(entry.name));
+      return i;
+    }
+    // Desallocate memory to prevent memory leak
+    free(const_cast<char *>(entry.name));
+  }
+
+  return -1;
+}
+
+bool executableAtIndex(size_t index, File &entry) {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    // Desallocate memory to prevent memory leak
+    delete[] dummy.data;
+    free(const_cast<char *>(dummy.name));
+    if (dummy.isExecutable) {
+      if (final_count == index) {
+        entry.name = ""; // Don't store the name because of the memory leak
+        entry.data = (const uint8_t *)""; // Don't store the data because of the memory leak
+        // entry.name = dummy.name;
+        // entry.data = dummy.data;
+        entry.dataLength = dummy.dataLength;
+        entry.isExecutable = dummy.isExecutable;
+        return true;
+      }
+      final_count++;
+    }
+  }
+
+  return false;
+}
+
+size_t numberOfExecutables() {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    if (dummy.isExecutable) {
+      final_count++;
+    }
+    // Desallocate memory to prevent memory leak
+    delete[] dummy.data;
+    free(const_cast<char *>(dummy.name));
+  }
+
+  return final_count;
+}
+
 bool fileAtIndex(size_t index, File &entry) {
-  // Check if index is between 0 and the number of files
-  if ((size_t)0 > index)
-    return false;
+  // ReturnFilename variable is needed because the filename should be desallocated
+  // Check if index is inferior of equal to the number of files
   if (index >= numberOfFiles())
     return false;
 
@@ -196,7 +253,10 @@ bool fileAtIndex(size_t index, File &entry) {
       // If the index is equal to the actual file
       if (nb == index) {
         // Set name
-        entry.name = (const char * )file->d_name;
+        // if (returnFilename) {
+        entry.name = strdup(file->d_name); // FIXME: Use a different method because this is dirty code
+        // }
+        // free(const_cast<char*>(entry.name));
         // Initialize default values
         entry.data = nullptr;
         entry.dataLength = 0;
@@ -208,7 +268,7 @@ bool fileAtIndex(size_t index, File &entry) {
           return false;
         }
 
-        unsigned char* content = new unsigned char[info.st_size];
+        unsigned char* content = new unsigned char[info.st_size]; // FIXME: This creates a memory leak
         if (content == NULL) {
           // Close the directory and return false
           closedir(d);
@@ -217,6 +277,8 @@ bool fileAtIndex(size_t index, File &entry) {
         // Open file
         FILE *fp = fopen(entry.name, "rb");
         if (fp == NULL) {
+          // Desallocate memory
+          delete content;
           // Close the directory and return false
           closedir(d);
           return false;
