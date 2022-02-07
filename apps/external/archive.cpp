@@ -16,7 +16,6 @@ namespace External {
 namespace Archive {
 
 #ifdef DEVICE
-// Device functions
 
 struct TarHeader
 {                              /* byte offset */
@@ -157,7 +156,7 @@ bool executableAtIndex(size_t index, File &entry) {
       final_count++;
     }
   }
-
+  
   return false;
 }
 
@@ -174,70 +173,8 @@ size_t numberOfExecutables() {
 }
 
 #else
-// Simulator functions
-
-int indexFromName(const char *name) {
-  File entry;
-  // Enable returnFilename because of the memory is desallocated after
-  for (int i = 0; fileAtIndex(i, entry); i++) {
-    delete[] entry.data;
-    if (strcmp(name, entry.name) == 0) {
-      // Desallocate memory to prevent memory leak
-      free(const_cast<char *>(entry.name));
-      return i;
-    }
-    // Desallocate memory to prevent memory leak
-    free(const_cast<char *>(entry.name));
-  }
-
-  return -1;
-}
-
-bool executableAtIndex(size_t index, File &entry) {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++) {
-    // Desallocate memory to prevent memory leak
-    delete[] dummy.data;
-    free(const_cast<char *>(dummy.name));
-    if (dummy.isExecutable) {
-      if (final_count == index) {
-        entry.name = ""; // Don't store the name because of the memory leak
-        entry.data = (const uint8_t *)""; // Don't store the data because of the memory leak
-        // entry.name = dummy.name;
-        // entry.data = dummy.data;
-        entry.dataLength = dummy.dataLength;
-        entry.isExecutable = dummy.isExecutable;
-        return true;
-      }
-      final_count++;
-    }
-  }
-
-  return false;
-}
-
-size_t numberOfExecutables() {
-  File dummy;
-  size_t count;
-  size_t final_count = 0;
-
-  for (count = 0; fileAtIndex(count, dummy); count++) {
-    if (dummy.isExecutable) {
-      final_count++;
-    }
-    // Desallocate memory to prevent memory leak
-    delete[] dummy.data;
-    free(const_cast<char *>(dummy.name));
-  }
-
-  return final_count;
-}
 
 bool fileAtIndex(size_t index, File &entry) {
-  // ReturnFilename variable is needed because the filename should be desallocated
   // Check if index is inferior of equal to the number of files
   if (index >= numberOfFiles())
     return false;
@@ -306,12 +243,72 @@ bool fileAtIndex(size_t index, File &entry) {
   return false;
 }
 
+bool executableAtIndex(size_t index, File &entry) {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    // Desallocate memory to prevent memory leak
+    delete[] dummy.data;
+    free(const_cast<char *>(dummy.name));
+    if (dummy.isExecutable) {
+      if (final_count == index) {
+        entry.name = ""; // Don't store the name because of the memory leak
+        entry.data = (const uint8_t *)""; // Don't store the data because of the memory leak
+        // entry.name = dummy.name;
+        // entry.data = dummy.data;
+        entry.dataLength = dummy.dataLength;
+        entry.isExecutable = dummy.isExecutable;
+        return true;
+      }
+      final_count++;
+    }
+  }
+
+  return false;
+}
+
+size_t numberOfExecutables() {
+  File dummy;
+  size_t count;
+  size_t final_count = 0;
+
+  for (count = 0; fileAtIndex(count, dummy); count++) {
+    if (dummy.isExecutable) {
+      final_count++;
+    }
+    // Desallocate memory to prevent memory leak
+    delete[] dummy.data;
+    free(const_cast<char *>(dummy.name));
+  }
+
+  return final_count;
+}
+
 extern "C" void extapp_main(void);
 
 // TODO: Execute the file instead of the built-in default application
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   extapp_main();
   return 0;
+}
+
+int indexFromName(const char *name) {
+  File entry;
+  // Enable returnFilename because of the memory is desallocated after
+  for (int i = 0; fileAtIndex(i, entry); i++) {
+    delete[] entry.data;
+    if (strcmp(name, entry.name) == 0) {
+      // Desallocate memory to prevent memory leak
+      free(const_cast<char *>(entry.name));
+      return i;
+    }
+    // Desallocate memory to prevent memory leak
+    free(const_cast<char *>(entry.name));
+  }
+
+  return -1;
 }
 
 size_t numberOfFiles() {
