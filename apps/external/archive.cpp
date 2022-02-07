@@ -177,7 +177,7 @@ size_t numberOfExecutables() {
 #else
 
 bool fileAtIndex(size_t index, File &entry) {
-  // Check if index is inferior of equal to the number of files
+  // Check if index is inferior or equal to the number of files
   if (index >= numberOfFiles())
     return false;
 
@@ -192,10 +192,7 @@ bool fileAtIndex(size_t index, File &entry) {
       // If the index is equal to the actual file
       if (nb == index) {
         // Set name
-        // if (returnFilename) {
-        entry.name = strdup(file->d_name); // FIXME: Use a different method because this is dirty code
-        // }
-        // free(const_cast<char*>(entry.name));
+        entry.name = strdup(file->d_name);
         // Initialize default values
         entry.data = nullptr;
         entry.dataLength = 0;
@@ -207,7 +204,7 @@ bool fileAtIndex(size_t index, File &entry) {
           return false;
         }
 
-        unsigned char* content = new unsigned char[info.st_size]; // FIXME: This creates a memory leak
+        unsigned char* content = new unsigned char[info.st_size]; // FIXME: This creates sometimes a memory leak
         if (content == NULL) {
           // Close the directory and return false
           closedir(d);
@@ -231,7 +228,7 @@ bool fileAtIndex(size_t index, File &entry) {
         entry.dataLength = info.st_size;
         // Check if file is executable
         entry.isExecutable = (!access(entry.name, X_OK));
-        // Close the directory and quit the function because the file have been found
+        // Close the directory and quit the function because the file has been found
         closedir(d);
         return true;
       }
