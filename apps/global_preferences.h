@@ -42,6 +42,13 @@ public:
   void setCursorSaving(bool cursorsave) { m_cursorSaving = cursorsave; }
   int brightnessLevel() const { return m_brightnessLevel; }
   void setBrightnessLevel(int brightnessLevel);
+  // To modify the python heap
+  void setPythonHeap(uint8_t n);
+  int8_t getPythonHeap();
+  char *memory_heap_available_start;
+  char *memory_heap_available_end;
+  bool isPythonInit = false;
+  // End
   const KDFont * font() const { return m_font; }
   void setFont(const KDFont * font) { m_font = font; }
   constexpr static int NumberOfBrightnessStates = 15;
@@ -74,6 +81,7 @@ private:
   bool m_syntaxhighlighting;
   bool m_cursorSaving;
   int m_brightnessLevel;
+  uint32_t python_heap = 62;
   const KDFont * m_font;
 };
 

@@ -3,6 +3,7 @@
 #include <apps/i18n.h>
 #include "helpers.h"
 #include <ion/unicode/utf8_helper.h>
+#include "apps/global_preferences.h"
 
 namespace Code {
 
@@ -94,6 +95,17 @@ App::App(Snapshot * snapshot) :
   m_codeStackViewController(&m_modalViewController, &m_listFooter),
   m_variableBoxController(snapshot->scriptStore())
 {
+  // The variable k_pythonHeapSize defines the size of the heap
+  // But we allocate only what the user defines so we've got free space to use
+  this->k_pythonHeapSize = GlobalPreferences::sharedGlobalPreferences()->getPythonHeap() * 1000;
+  if(this->k_pythonHeapSize != DEFAULT_PYTHON_HEAP_SIZE) {
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)this->m_pythonHeap[this->k_pythonHeapSize + 1];
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = (char*)this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE - this->k_pythonHeapSize];
+    this->m_pythonHeap[this->k_pythonHeapSize + 1] = 'c';
+  } else {
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE];
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = (char*)GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start;
+  }
   Clipboard::sharedClipboard()->enterPython();
 }
 
