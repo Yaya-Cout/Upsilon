@@ -31,7 +31,8 @@ LIBDIRS	:= $(DEVKITPRO)/libctru
 INCLUDE	= $(foreach dir,$(LIBDIRS),-I$(dir)/include) \
           -I$(CURDIR)/$(BUILD)
 
-CFLAGS += $(INCLUDE) -DARM11 -D_3DS
+# Keep the -D_3DS flag for compatibility with the code
+CFLAGS += $(INCLUDE) -D_3DS -D__3DS__
 
 CXXFLAGS = $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
