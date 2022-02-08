@@ -21,7 +21,9 @@ on:
 jobs:
   nintendo_3ds:
     if: github.event.inputs.trigger3DS == 'yes'
-    runs-on: devkitpro/devkitarm
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkitarm
     steps:
       - uses: actions/checkout@v1
         with:
