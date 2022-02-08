@@ -28,9 +28,6 @@ jobs:
       # - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
       - run: sudo apt-get update && sudo apt-get upgrade -y
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config -y
-      - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
-      - run: echo ::set-env name=DEVKITARM::/opt/devkitpro/devkitARM
-      - run: echo ::set-env name=PATH::$DEVKITPRO/tools/bin:$DEVKITARM/bin:$PATH
 
       - uses: actions/checkout@v1
         with:
