@@ -25,7 +25,7 @@ jobs:
     container:
       image: devkitpro/devkitarm
     steps:
-      - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
+      # - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
       - run: sudo apt-get update && sudo apt-get upgrade
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
       - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
