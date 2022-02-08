@@ -25,6 +25,11 @@ jobs:
     container:
       image: devkitpro/devkitarm
     steps:
+      - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
+      - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
+      - run: echo ::set-env name=DEVKITARM::/opt/devkitpro/devkitARM
+      - run: echo ::set-env name=PATH::$DEVKITPRO/tools/bin:$DEVKITARM/bin:$PATH
+
       - uses: actions/checkout@v1
         with:
           submodules: true
