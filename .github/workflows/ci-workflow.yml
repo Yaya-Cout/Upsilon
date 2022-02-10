@@ -60,7 +60,7 @@ jobs:
       - id: 'upload-file'
         if: |
           ${{ github.event_name == 'push' }} &&
-          ${{ env.GOOGLE_CREDENTIALS != '' }}d
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/android/epsilon.apk'
