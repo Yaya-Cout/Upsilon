@@ -51,14 +51,16 @@ jobs:
           submodules: 'recursive'
       - run: make -j2 PLATFORM=simulator TARGET=android
       - id: 'auth'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/android/epsilon.apk'
@@ -106,14 +108,16 @@ jobs:
       - run: find final-output/ -type f -exec bash -c "shasum -a 256 -b {} > {}.sha256" \;
       - run: tar cvfz binpack-n0100.tgz final-output/*
       - id: 'auth'
-        if: ${{ github.event_name == 'push'}}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-directory'
-        if: ${{ github.event_name == 'push'}}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'final-output/'
@@ -142,14 +146,16 @@ jobs:
       - run: make -j2 binpack
       - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack-n0110.tgz
       - id: 'auth'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-directory'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/device/n0110/binpack/'
@@ -174,14 +180,16 @@ jobs:
       - run: make -j2 PLATFORM=simulator test.exe
       - run: cmd /c output\release\simulator\windows\test.exe --headless
       - id: 'auth'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/windows/epsilon.exe'
@@ -204,14 +212,16 @@ jobs:
       - run: make -j2 PLATFORM=simulator TARGET=web test.js
       - run: node output/release/simulator/web/test.js --headless
       - id: 'auth'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/web/epsilon.js'
@@ -232,14 +242,16 @@ jobs:
       - run: make -j2 PLATFORM=simulator test.bin
       - run: output/release/simulator/linux/test.bin --headless
       - id: 'auth'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
-        if: ${{ github.event_name == 'push' }}
-        if: '${{secrets.GOOGLE_CREDENTIALS}}'
+        if: |
+          ${{ github.event_name == 'push' }} ||
+          ${{secrets.GOOGLE_CREDENTIALS}}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/linux/epsilon.bin'
