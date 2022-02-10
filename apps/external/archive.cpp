@@ -243,6 +243,9 @@ bool fileAtIndex(size_t index, File &entry) {
 }
 
 bool executableAtIndex(size_t index, File &entry) {
+  if (index >= numberOfFiles() + (size_t)(numberOfExecutables() == 0))
+    return false;
+
   File dummy;
   size_t count;
   size_t final_count = 0;
@@ -253,8 +256,9 @@ bool executableAtIndex(size_t index, File &entry) {
     free(const_cast<char *>(dummy.name));
     if (dummy.isExecutable) {
       if (final_count == index) {
-        entry.name = ""; // Don't store the name because of the memory leak
-        entry.data = (const uint8_t *)""; // Don't store the data because of the memory leak
+        // TODO: Execute app, and add filename without memory leak
+        entry.name = "Built-in";
+        entry.data = NULL; // Don't store the data because of the memory leak
         // entry.name = dummy.name;
         // entry.data = dummy.data;
         entry.dataLength = dummy.dataLength;
@@ -264,7 +268,14 @@ bool executableAtIndex(size_t index, File &entry) {
       final_count++;
     }
   }
-
+  // If no app was found, use the build-in app
+  if (final_count == 0 ) {
+    entry.name = "Built-in";
+    entry.data = NULL;
+    entry.dataLength = 0;
+    entry.isExecutable = true;
+    return true;
+  }
   return false;
 }
 
@@ -282,12 +293,14 @@ size_t numberOfExecutables() {
     free(const_cast<char *>(dummy.name));
   }
 
+  if (final_count == 0) {
+    return 1;
+  }
   return final_count;
 }
 
 extern "C" void extapp_main(void);
 
-// TODO: Execute the file instead of the built-in default application
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   extapp_main();
   return 0;
@@ -313,7 +326,6 @@ int indexFromName(const char *name) {
 size_t numberOfFiles() {
   DIR *d = opendir(".");
   int nb = 0;
-  // FIXME: d is sometimes equal to nullptr unexpectedly
   if (d) {
     dirent *file;
     while ((file = readdir(d)) != NULL) {

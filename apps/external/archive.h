@@ -22,6 +22,10 @@ size_t numberOfFiles();
 size_t numberOfExecutables();
 bool executableAtIndex(size_t index, File &entry);
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize);
+#ifndef DEVICE
+#define EXTERNAL_ARCHIVE_MEMORY_USE_FREE
+#endif
+
 
 }
 }

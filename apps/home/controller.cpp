@@ -216,6 +216,11 @@ void Controller::willDisplayCellAtLocation(HighlightCell * cell, int i, int j) {
         } else {
           appCell->setExtAppDescriptor(app_file.name, ImageStore::ExternalIcon);
         }
+        #ifdef EXTERNAL_ARCHIVE_MEMORY_USE_FREE
+          // Desallocate memory to prevent memory leak
+          free(const_cast<char *>(image_file.name));
+          // TODO: Free file content
+        #endif
       } else {
         appCell->setExtAppDescriptor(app_file.name, ImageStore::ExternalIcon);
       }
@@ -224,6 +229,12 @@ void Controller::willDisplayCellAtLocation(HighlightCell * cell, int i, int j) {
     } else {
       appCell->setVisible(false);
     }
+    #ifdef EXTERNAL_ARCHIVE_MEMORY_USE_FREE
+      // Desallocate memory to prevent memory leak
+      // free(const_cast<char *>(app_file.name));
+      // TODO: Free file content
+      // delete[] app_file.data;
+    #endif
 #else
     appCell->setVisible(false);
 #endif
