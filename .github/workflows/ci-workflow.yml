@@ -53,14 +53,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/android/epsilon.apk'
@@ -110,14 +110,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-directory'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'final-output/'
@@ -148,14 +148,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-directory'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/device/n0110/binpack/'
@@ -182,14 +182,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/windows/epsilon.exe'
@@ -214,14 +214,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/web/epsilon.js'
@@ -244,14 +244,14 @@ jobs:
       - id: 'auth'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
       - id: 'upload-file'
         if: |
           ${{ github.event_name == 'push' }} ||
-          ${{ env.GOOGLE_CREDENTIALS != 0 }}
+          ${{ env.GOOGLE_CREDENTIALS != '' }}
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: 'output/release/simulator/linux/epsilon.bin'
