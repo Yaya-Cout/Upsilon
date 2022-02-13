@@ -15,7 +15,7 @@ namespace Settings {
 
 BrightnessController::BrightnessController(Responder * parentResponder, InputEventHandlerDelegate * inputEventHandlerDelegate) :
   GenericSubController(parentResponder),
-  m_dimBrightnessCell(I18n::Message::Brightness, KDFont::LargeFont),
+  m_brightnessCell(I18n::Message::Brightness, KDFont::LargeFont),
   m_editableCellIdleBeforeDimmingSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_editableCellIdleBeforeSuspendSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_BrightnessShortcutCell(&m_selectableTableView, inputEventHandlerDelegate, this)
@@ -30,7 +30,7 @@ BrightnessController::BrightnessController(Responder * parentResponder, InputEve
 
 HighlightCell * BrightnessController::reusableCell(int index, int type) {
   HighlightCell * editableCell[] = {
-    &m_dimBrightnessCell,
+    &m_brightnessCell,
     &m_editableCellIdleBeforeDimmingSeconds,
     &m_editableCellIdleBeforeSuspendSeconds,
     &m_BrightnessShortcutCell

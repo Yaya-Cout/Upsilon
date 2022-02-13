@@ -12,7 +12,7 @@ namespace Settings {
 class BrightnessController : public GenericSubController, public Shared::ParameterTextFieldDelegate {
 public:
   BrightnessController(Responder * parentResponder, InputEventHandlerDelegate * inputEventHandlerDelegate);
-  TELEMETRY_ID("MoreBrightness");
+  TELEMETRY_ID("BrightnessSettings");
   HighlightCell * reusableCell(int index, int type) override;
   int reusableCellCount(int type) override;
   void willDisplayCellForIndex(HighlightCell * cell, int index) override;
@@ -22,7 +22,7 @@ public:
 protected:
   constexpr static int k_totalNumberOfCell = 4;
 private:
-  MessageTableCellWithGauge m_dimBrightnessCell;
+  MessageTableCellWithGauge m_brightnessCell;
   MessageTableCellWithEditableText m_editableCellIdleBeforeDimmingSeconds;
   MessageTableCellWithEditableText m_editableCellIdleBeforeSuspendSeconds;
   MessageTableCellWithEditableText m_BrightnessShortcutCell;

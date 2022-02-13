@@ -99,7 +99,7 @@ bool MainController::handleEvent(Ion::Events::Event event) {
       subController = &m_examModeController;
     } else if (title == I18n::Message::About) {
       subController = &m_aboutController;
-    } else if (title == I18n::Message::MoreBrightness) {
+    } else if (title == I18n::Message::BrightnessSettings) {
       subController = &m_brightnessController;
     } else if (title == I18n::Message::Accessibility) {
       subController = &m_accessibilityController;
