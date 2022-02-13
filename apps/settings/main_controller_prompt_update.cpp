@@ -8,7 +8,6 @@ using namespace Shared;
 
 constexpr SettingsMessageTree s_modelMenu[] =
   {SettingsMessageTree(I18n::Message::MathOptions, s_modelMathOptionsChildren),
-    SettingsMessageTree(I18n::Message::Brightness),
     SettingsMessageTree(I18n::Message::MoreBrightness, s_brightnessChildren),
     SettingsMessageTree(I18n::Message::DateTime, s_modelDateTimeChildren),
     SettingsMessageTree(I18n::Message::Language),

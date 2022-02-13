@@ -15,7 +15,7 @@ namespace Settings {
 
 BrightnessController::BrightnessController(Responder * parentResponder, InputEventHandlerDelegate * inputEventHandlerDelegate) :
   GenericSubController(parentResponder),
-  m_dimBrightnessCell(I18n::Message::Dim, KDFont::LargeFont),
+  m_dimBrightnessCell(I18n::Message::Brightness, KDFont::LargeFont),
   m_editableCellIdleBeforeDimmingSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_editableCellIdleBeforeSuspendSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_BrightnessShortcutCell(&m_selectableTableView, inputEventHandlerDelegate, this)
@@ -53,7 +53,7 @@ void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int ind
   if(index == 0){
     MessageTableCellWithGauge * myGaugeCell = (MessageTableCellWithGauge *)cell;
     GaugeView * myGauge = (GaugeView *)myGaugeCell->accessoryView();
-    myGauge->setLevel((float)GlobalPreferences::sharedGlobalPreferences()->dimBacklightBrightness()/(float)Ion::Backlight::MaxBrightness);
+    myGauge->setLevel((float)GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()/(float)Ion::Backlight::MaxBrightness);
     return;
   } else {
     MessageTableCellWithEditableText * myCell = (MessageTableCellWithEditableText *)cell;
@@ -85,7 +85,7 @@ bool BrightnessController::handleEvent(Ion::Events::Event event) {
     if ((selectedRow() == 0) && (event == Ion::Events::Right || event == Ion::Events::Left || event == Ion::Events::Plus || event == Ion::Events::Minus)) {
       int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
       int direction = (event == Ion::Events::Right || event == Ion::Events::Plus) ? delta : -delta;
-      GlobalPreferences::sharedGlobalPreferences()->setDimBacklightBrightness(GlobalPreferences::sharedGlobalPreferences()->dimBacklightBrightness()+direction);
+      GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
       m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
       return true;
     }

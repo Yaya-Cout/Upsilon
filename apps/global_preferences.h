@@ -45,8 +45,6 @@ public:
   const KDFont * font() const { return m_font; }
   void setFont(const KDFont * font) { m_font = font; }
   constexpr static int NumberOfBrightnessStates = 15;
-  int dimBacklightBrightness() const { return m_dimBacklightBrightness; }
-  void setDimBacklightBrightness(int dimBacklightBrightness);
   int idleBeforeSuspendSeconds() const { return m_idleBeforeSuspendSeconds; }
   void setIdleBeforeSuspendSeconds(int m_idleBeforeSuspendSeconds);
   int idleBeforeDimmingSeconds() const { return m_idleBeforeDimmingSeconds; }
@@ -68,7 +66,6 @@ private:
     m_syntaxhighlighting(true),
     m_cursorSaving(true),
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
-    m_dimBacklightBrightness(0),
     m_idleBeforeSuspendSeconds(300),
     m_idleBeforeDimmingSeconds(30),
     m_BrightnessShortcut(4),
@@ -86,7 +83,6 @@ private:
   bool m_syntaxhighlighting;
   bool m_cursorSaving;
   int m_brightnessLevel;
-  int m_dimBacklightBrightness;
   int m_idleBeforeSuspendSeconds;
   int m_idleBeforeDimmingSeconds;
   int m_BrightnessShortcut;

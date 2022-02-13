@@ -70,7 +70,6 @@ private:
   bool hasPrompt() const { return promptMessage() != I18n::Message::Default; }
   constexpr static int k_numberOfSimpleChevronCells = 10;
   MessageTableCellWithChevronAndMessage m_cells[k_numberOfSimpleChevronCells];
-  MessageTableCellWithGaugeWithSeparator m_brightnesscell;
   MessageTableCellWithSwitch m_popUpCell;
   SelectableTableView m_selectableTableView;
   MathOptionsController m_mathOptionsController;
