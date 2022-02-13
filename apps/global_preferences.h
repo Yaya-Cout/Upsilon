@@ -66,8 +66,8 @@ private:
     m_syntaxhighlighting(true),
     m_cursorSaving(true),
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
-    m_idleBeforeSuspendSeconds(300),
-    m_idleBeforeDimmingSeconds(30),
+    m_idleBeforeSuspendSeconds(55),
+    m_idleBeforeDimmingSeconds(45),
     m_BrightnessShortcut(4),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
