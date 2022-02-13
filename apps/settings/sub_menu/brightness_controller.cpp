@@ -18,17 +18,14 @@ BrightnessController::BrightnessController(Responder * parentResponder, InputEve
   m_dimBrightnessCell(I18n::Message::Dim, KDFont::LargeFont),
   m_editableCellIdleBeforeDimmingSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
   m_editableCellIdleBeforeSuspendSeconds(&m_selectableTableView, inputEventHandlerDelegate, this),
-  m_brightnessShortcutCell(&m_selectableTableView, inputEventHandlerDelegate, this),
-  m_dimmerDurationCell(&m_selectableTableView, inputEventHandlerDelegate, this)
+  m_BrightnessShortcutCell(&m_selectableTableView, inputEventHandlerDelegate, this)
 {
   m_editableCellIdleBeforeDimmingSeconds.setMessage(I18n::Message::IdleTimeBeforeDimming);
   m_editableCellIdleBeforeDimmingSeconds.setMessageFont(KDFont::LargeFont);
   m_editableCellIdleBeforeSuspendSeconds.setMessage(I18n::Message::IdleTimeBeforeSuspend);
   m_editableCellIdleBeforeSuspendSeconds.setMessageFont(KDFont::LargeFont);
-  m_brightnessShortcutCell.setMessage(I18n::Message::BrightnessShortcut);
-  m_brightnessShortcutCell.setMessageFont(KDFont::LargeFont);
-  m_dimmerDurationCell.setMessage(I18n::Message::DimmerDuration);
-  m_dimmerDurationCell.setMessageFont(KDFont::LargeFont);
+  m_BrightnessShortcutCell.setMessage(I18n::Message::BrightnessShortcut);
+  m_BrightnessShortcutCell.setMessageFont(KDFont::LargeFont);
 }
 
 HighlightCell * BrightnessController::reusableCell(int index, int type) {
@@ -36,8 +33,7 @@ HighlightCell * BrightnessController::reusableCell(int index, int type) {
     &m_dimBrightnessCell,
     &m_editableCellIdleBeforeDimmingSeconds,
     &m_editableCellIdleBeforeSuspendSeconds,
-    &m_brightnessShortcutCell,
-    &m_dimmerDurationCell
+    &m_BrightnessShortcutCell
   };
   return editableCell[index];
 }
@@ -75,10 +71,6 @@ void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int ind
       }
       case 3:{
         val = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
-        break;
-      }
-      case 4:{
-        val = GlobalPreferences::sharedGlobalPreferences()->dimmerDuration();
         break;
       }
       default:
@@ -120,16 +112,13 @@ bool BrightnessController::textFieldDidFinishEditing(TextField * textField, cons
       GlobalPreferences::sharedGlobalPreferences()->setIdleBeforeSuspendSeconds(val);
       m_editableCellIdleBeforeSuspendSeconds.setAccessoryText(text);
       break;
-    case 3:
+    case 3:{
       if(val > GlobalPreferences::NumberOfBrightnessStates){ val = GlobalPreferences::NumberOfBrightnessStates;
       } else if (val < 0){val = 0;}
       GlobalPreferences::sharedGlobalPreferences()->setBrightnessShortcut(val);
-      m_brightnessShortcutCell.setAccessoryText(text);
+      m_BrightnessShortcutCell.setAccessoryText(text);
       break;
-    case 4:
-      GlobalPreferences::sharedGlobalPreferences()->setDimmerDuration(val);
-      m_dimmerDurationCell.setAccessoryText(text);
-      break;
+    }
     default:
       assert(false);
   }
