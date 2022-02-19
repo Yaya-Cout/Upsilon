@@ -32,7 +32,7 @@ extern const Shared::SettingsMessageTree s_contributorsChildren[23];
 extern const Shared::SettingsMessageTree s_modelAboutChildren[10];
 extern const Shared::SettingsMessageTree s_usbProtectionChildren[2];
 extern const Shared::SettingsMessageTree s_usbProtectionLevelChildren[3];
-extern const Shared::SettingsMessageTree s_brightnessChildren[5];
+extern const Shared::SettingsMessageTree s_brightnessChildren[4];
 extern const Shared::SettingsMessageTree s_model;
 
 class MainController : public ViewController, public ListViewDataSource, public SelectableTableViewDataSource {
@@ -70,7 +70,6 @@ private:
   bool hasPrompt() const { return promptMessage() != I18n::Message::Default; }
   constexpr static int k_numberOfSimpleChevronCells = 10;
   MessageTableCellWithChevronAndMessage m_cells[k_numberOfSimpleChevronCells];
-  MessageTableCellWithGaugeWithSeparator m_brightnesscell;
   MessageTableCellWithSwitch m_popUpCell;
   SelectableTableView m_selectableTableView;
   MathOptionsController m_mathOptionsController;
