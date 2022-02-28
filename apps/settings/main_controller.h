@@ -73,6 +73,7 @@ private:
   MessageTableCellWithSwitch m_popUpCell;
   SelectableTableView m_selectableTableView;
   MathOptionsController m_mathOptionsController;
+  BrightnessController m_brightnessController;
   LocalizationController m_localizationController;
   AccessibilityController m_accessibilityController;
   DateTimeController m_dateTimeController;
@@ -81,7 +82,6 @@ private:
   AboutController m_aboutController;
   PreferencesController m_preferencesController;
   UsbInfoController m_usbInfoController;
-  BrightnessController m_brightnessController;
 };
 
 }

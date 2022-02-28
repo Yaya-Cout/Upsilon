@@ -36,8 +36,8 @@ MainController::MainController(Responder * parentResponder, InputEventHandlerDel
   m_popUpCell(I18n::Message::Default, KDFont::LargeFont),
   m_selectableTableView(this),
   m_mathOptionsController(this, inputEventHandlerDelegate),
-  m_localizationController(this, Metric::CommonTopMargin, LocalizationController::Mode::Language),
   m_brightnessController(this, inputEventHandlerDelegate),
+  m_localizationController(this, Metric::CommonTopMargin, LocalizationController::Mode::Language),
   m_accessibilityController(this),
   m_dateTimeController(this),
   m_codeOptionsController(this),
@@ -64,14 +64,6 @@ void MainController::didBecomeFirstResponder() {
 
 bool MainController::handleEvent(Ion::Events::Event event) {
   GlobalPreferences * globalPreferences = GlobalPreferences::sharedGlobalPreferences();
-  if (event == Ion::Events::BrightnessPlus || event == Ion::Events::BrightnessMinus){
-    int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
-    int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
-    int direction = (event == Ion::Events::BrightnessPlus) ? NumberOfStepsPerShortcut*delta : -delta*NumberOfStepsPerShortcut;
-    GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
-    m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), 1);
-    return true;
-  }
   if (model()->childAtIndex(selectedRow())->numberOfChildren() == 0) {
     if (model()->childAtIndex(selectedRow())->label() == promptMessage()) {
       if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {

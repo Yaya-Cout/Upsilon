@@ -89,6 +89,14 @@ bool BrightnessController::handleEvent(Ion::Events::Event event) {
       m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
       return true;
     }
+    if (event == Ion::Events::BrightnessPlus || event == Ion::Events::BrightnessMinus){
+      int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
+      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
+      int direction = (event == Ion::Events::BrightnessPlus) ? NumberOfStepsPerShortcut*delta : -delta*NumberOfStepsPerShortcut;
+      GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
+      m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), 0);
+      return true;
+    }
     return false;
 }
 
