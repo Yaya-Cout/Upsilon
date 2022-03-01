@@ -61,7 +61,6 @@ TextFieldDelegateApp::TextFieldDelegateApp(Snapshot * snapshot, ViewController *
 }
 
 bool TextFieldDelegateApp::fieldDidReceiveEvent(EditableField * field, Responder * responder, Ion::Events::Event event) {
-  return false;
   if (event == Ion::Events::XNT) {
     if (!field->isEditing()) {
       field->setEditing(true);
