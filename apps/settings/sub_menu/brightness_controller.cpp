@@ -70,7 +70,7 @@ void BrightnessController::willDisplayCellForIndex(HighlightCell * cell, int ind
         break;
       }
       case 3:{
-        val = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
+        val = GlobalPreferences::sharedGlobalPreferences()->brightnessShortcut();
         break;
       }
       default:
@@ -91,7 +91,7 @@ bool BrightnessController::handleEvent(Ion::Events::Event event) {
     }
     if (event == Ion::Events::BrightnessPlus || event == Ion::Events::BrightnessMinus){
       int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
-      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
+      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->brightnessShortcut();
       int direction = (event == Ion::Events::BrightnessPlus) ? NumberOfStepsPerShortcut*delta : -delta*NumberOfStepsPerShortcut;
       GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
       m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), 0);

@@ -1,7 +1,6 @@
 #ifndef APPS_BACKLIGHT_DIMMING_TIMER_H
 #define APPS_BACKLIGHT_DIMMING_TIMER_H
 
-#include "global_preferences.h"
 #include <escher.h>
 
 class BacklightDimmingTimer : public Timer {

@@ -49,7 +49,7 @@ public:
   void setIdleBeforeSuspendSeconds(int m_idleBeforeSuspendSeconds);
   int idleBeforeDimmingSeconds() const { return m_idleBeforeDimmingSeconds; }
   void setIdleBeforeDimmingSeconds(int m_idleBeforeDimmingSeconds);
-  int BrightnessShortcut() const { return m_BrightnessShortcut; }
+  int brightnessShortcut() const { return m_brightnessShortcut; }
   void setBrightnessShortcut(int m_BrightnessShortcut);
 private:
   static_assert(I18n::NumberOfLanguages > 0, "I18n::NumberOfLanguages is not superior to 0"); // There should already have been an error when processing an empty EPSILON_I18N flag
@@ -68,7 +68,7 @@ private:
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
     m_idleBeforeSuspendSeconds(55),
     m_idleBeforeDimmingSeconds(45),
-    m_BrightnessShortcut(4),
+    m_brightnessShortcut(4),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
   I18n::Country m_country;
@@ -85,7 +85,7 @@ private:
   int m_brightnessLevel;
   int m_idleBeforeSuspendSeconds;
   int m_idleBeforeDimmingSeconds;
-  int m_BrightnessShortcut;
+  int m_brightnessShortcut;
   const KDFont * m_font;
 };
 

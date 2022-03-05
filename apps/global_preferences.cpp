@@ -60,6 +60,6 @@ void GlobalPreferences::setIdleBeforeDimmingSeconds(int idleBeforeDimmingSeconds
   }
 }
 
-void GlobalPreferences::setBrightnessShortcut(int BrightnessShortcut){
-  m_BrightnessShortcut = BrightnessShortcut;
+void GlobalPreferences::setBrightnessShortcut(int brightnessShortcut){
+  m_brightnessShortcut = brightnessShortcut;
 }

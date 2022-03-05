@@ -266,7 +266,7 @@ bool AppsContainer::processEvent(Ion::Events::Event event) {
   }
   if (event == Ion::Events::BrightnessPlus || event == Ion::Events::BrightnessMinus) {
       int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
-      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->BrightnessShortcut();
+      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->brightnessShortcut();
       int direction = (event == Ion::Events::BrightnessPlus) ? NumberOfStepsPerShortcut*delta : -delta*NumberOfStepsPerShortcut;
       GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
   }
