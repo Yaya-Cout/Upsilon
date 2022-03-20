@@ -326,6 +326,7 @@ uint32_t ExtendedCodePoints[] = {
   0x3c9,   // ω // GREEK SMALL LETTER OMEGA
   0x454,   // є // CYRILLIC SMALL LETTER UKRAINIAN LE
   0x1d07,  // ᴇ // LATIN LETTER SMALL CAPITAL E
+  0x2026,  // … // HORIZONTAL ELLIPSIS
   0x212f,  // ℯ // SCRIPT SMALL E
   0x2190,  // ← // BACKWARD ARROW (leftarrow)
   0x2191,  // ↑ // TOP ARROW (uparrow)
@@ -354,7 +355,6 @@ uint32_t ExtendedCodePoints[] = {
   0x2264,  // ≤ // LESS-THAN OR EQUAL TO
   0x2265,  // ≥ // GREATER-THAN OR EQUAL TO
   0x2505,  // ┅ // BOX DRAWING EQU HEAVY DASH HORIZONTAL
-  0x2506,  // ┆ // BOX DRAWING EQU HEAVY DASH VERTICAL
   0xFFFD,  // � // REPLACEMENT CHARACTER
   0x1d422, // 𝐢 // MATHEMATICAL BOLD SMALL I"
 };
