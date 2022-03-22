@@ -18,10 +18,6 @@ void ColorParameterController::viewWillAppear() {
   // Restore the selected color
   KDColor FunctionColor = function()->color();
   uint8_t cellXPosition = 0;
-  // In debug mode, we want to be sure that the position of the cell is modified in the loop
-  #ifndef NDEBUG
-  bool positionModified = false;
-  #endif
   // TODO: Improve this if possible
   for (uint8_t i = 0; i < sizeof(Palette::DataColor)/sizeof(Palette::DataColor[0]); i++) {
     if (Palette::DataColor[i] == FunctionColor) {
@@ -31,7 +27,6 @@ void ColorParameterController::viewWillAppear() {
     }
   }
   assert(Palette::DataColor[cellXPosition] == FunctionColor);
-  assert(positionModified);
   selectCellAtLocation(0, cellXPosition);
   m_selectableTableView.reloadData();
 }
