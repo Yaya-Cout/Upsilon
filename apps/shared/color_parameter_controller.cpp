@@ -22,7 +22,6 @@ void ColorParameterController::viewWillAppear() {
   for (uint8_t i = 0; i < sizeof(Palette::DataColor)/sizeof(Palette::DataColor[0]); i++) {
     if (Palette::DataColor[i] == FunctionColor) {
       cellXPosition = i;
-      positionModified = true;
       break;
     }
   }
