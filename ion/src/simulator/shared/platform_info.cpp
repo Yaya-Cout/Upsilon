@@ -137,3 +137,7 @@ const volatile char * Ion::username() {
 const char * Ion::patchLevel() {
   return platform_infos.patchLevel();
 }
+
+void * storage_address(){
+    return storageAddress;
+}

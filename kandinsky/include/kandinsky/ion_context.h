@@ -28,10 +28,10 @@ public:
   bool gammaEnabled;
   int zoomPosition;
   static void putchar(char c);
+  void pushRectUniform(KDRect rect, KDColor color) override;
 private:
   KDIonContext();
   void pushRect(KDRect rect, const KDColor * pixels) override;
-  void pushRectUniform(KDRect rect, KDColor color) override;
   void pullRect(KDRect rect, KDColor * pixels) override;
   KDContext *rootContext;
   KDRealIonContext m_realContext;

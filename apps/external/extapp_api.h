@@ -252,7 +252,7 @@ EXTERNC const char * extapp_fileRead(const char * filename, size_t *len, int sto
 EXTERNC bool extapp_fileWrite(const char * filename, const char * content, size_t len, int storage);
 EXTERNC void extapp_lockAlpha();
 EXTERNC void extapp_resetKeyboard();
-EXTERNC int extapp_getKey(bool allowSuspend, bool *alphaWasActive);
+EXTERNC int extapp_getKey(int allowSuspend, bool *alphaWasActive);
 EXTERNC int extapp_restorebackup(int mode); // Keep for compatibility with KhiCAS on Khi, but it do nothing
 EXTERNC bool extapp_erasesector(void * ptr);
 EXTERNC bool extapp_writememory(unsigned char * dest,const unsigned char * data,size_t length);
