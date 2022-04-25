@@ -17,7 +17,7 @@ extern "C" {
 #include <python/port/mphalport.h>
 }
 
-#define EXTAPP_WRITE_FLASH 1
+#define EXTAPP_WRITE_FLASH 0
 
 typedef void (*startptr_t) (void);
 extern "C" void jump_to_firmware(const uint32_t *, const startptr_t);
