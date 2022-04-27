@@ -8,8 +8,11 @@
 #include "extapp_api.h"
 #include "../apps_container.h"
 #include "../global_preferences.h"
+
+#ifdef DEVICE
 #include <ion/src/device/shared/drivers/reset.h>
 #include <ion/src/device/shared/drivers/board.h>
+#endif
 
 #include <python/port/port.h>
 
@@ -17,16 +20,17 @@ extern "C" {
 #include <python/port/mphalport.h>
 }
 
-#define EXTAPP_WRITE_FLASH 0
-
 typedef void (*startptr_t) (void);
 extern "C" void jump_to_firmware(const uint32_t *, const startptr_t);
 
 const size_t baseaddr[] = {0x90000000,0x90180000,0x90400000};
 
 void boot_firmware(int slot) {
+  // The reset is only available on the device.
+  #ifdef DEVICE
   // Because the bootloader menu is showed on every boot, we just reset the calculator.
   Ion::Device::Reset::core();
+  #endif
 }
 
 const size_t kernelheader = 0xdec00df0;
@@ -355,21 +359,21 @@ int extapp_restorebackup(int mode) {
 }
 static void erase_sector(const char * ptr) {
 #ifdef DEVICE
-  #if EXTAPP_WRITE_FLASH
+  if (GlobalPreferences::sharedGlobalPreferences()->extapp_write_permission()) {
     Ion::Device::Flash::EraseSector(Ion::Device::Flash::SectorAtAddress((uint32_t)ptr));
-  #endif
+  }
 #endif
 }
 
 bool WriteMemory(unsigned char * dest, const unsigned char * data, size_t length) {
 #ifdef DEVICE
-  #if EXTAPP_WRITE_FLASH
+  if (GlobalPreferences::sharedGlobalPreferences()->extapp_write_permission()) {
     int n = Ion::Device::Flash::SectorAtAddress((uint32_t)dest);
     if (n < 0)
       return false;
     Ion::Device::Flash::WriteMemory(dest, (unsigned char *)data, length);
     return true;
-  #endif
+  }
 #endif
   return false;
 }
@@ -654,13 +658,13 @@ bool extapp_erasesector(void * ptr) {
   if (ptr == 0)
     Ion::Device::Reset::core();
   // Disable flash writting
-  #if EXTAPP_WRITE_FLASH
-  int i = Ion::Device::Flash::SectorAtAddress((size_t)ptr);
-  if (i < 0)
-    return false;
-  Ion::Device::Flash::EraseSector(i);
-  return true;
-  #endif
+  if (GlobalPreferences::sharedGlobalPreferences()->extapp_write_permission()) {
+    int i = Ion::Device::Flash::SectorAtAddress((size_t)ptr);
+    if (i < 0)
+      return false;
+    Ion::Device::Flash::EraseSector(i);
+    return true;
+  }
 #endif
   return false;
 }
@@ -668,13 +672,13 @@ bool extapp_erasesector(void * ptr) {
 bool extapp_writememory(unsigned char * dest, const unsigned char * data, size_t length) {
 #ifdef DEVICE
   // Disable flash writting
-  #if EXTAPP_WRITE_FLASH
-  int n = Ion::Device::Flash::SectorAtAddress((uint32_t)dest);
-  if (n < 0)
-    return false;
-  Ion::Device::Flash::WriteMemory(dest, (unsigned char *)data, length);
-  return true;
-  #endif
+  if (GlobalPreferences::sharedGlobalPreferences()->extapp_write_permission()) {
+    int n = Ion::Device::Flash::SectorAtAddress((uint32_t)dest);
+    if (n < 0)
+      return false;
+    Ion::Device::Flash::WriteMemory(dest, (unsigned char *)data, length);
+    return true;
+  }
 #endif
   return false;
 }

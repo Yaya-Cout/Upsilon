@@ -201,11 +201,14 @@ void Controller::willDisplayCellAtLocation(HighlightCell * cell, int i, int j) {
 
 
     if (External::Archive::executableAtIndex(appIndex - container->numberOfApps(), app_file)) {
-      char temp_name_buffer[100];
-      strlcpy(temp_name_buffer, app_file.name, 94);
-      strlcat(temp_name_buffer, ".icon", 99);
+      int img_index = -1;
+      if (GlobalPreferences::sharedGlobalPreferences()->extapp_icon()) {
+        char temp_name_buffer[100];
+        strlcpy(temp_name_buffer, app_file.name, 94);
+        strlcat(temp_name_buffer, ".icon", 99);
 
-      int img_index = External::Archive::indexFromName(temp_name_buffer);
+        img_index = External::Archive::indexFromName(temp_name_buffer);
+      }
 
       if (img_index != -1) {
         External::Archive::File image_file;

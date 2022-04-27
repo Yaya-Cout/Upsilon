@@ -51,6 +51,10 @@ public:
   void setIdleBeforeDimmingSeconds(int m_idleBeforeDimmingSeconds);
   int brightnessShortcut() const { return m_brightnessShortcut; }
   void setBrightnessShortcut(int m_BrightnessShortcut);
+  bool extapp_write_permission() const { return m_extapp_write_permission; }
+  void setExtapp_write_permission(bool extapp_write) { m_extapp_write_permission = extapp_write; }
+  bool extapp_icon() const { return m_extapp_icon; }
+  void setExtapp_icon(bool extapp_icon) { m_extapp_icon = extapp_icon; }
 private:
   static_assert(I18n::NumberOfLanguages > 0, "I18n::NumberOfLanguages is not superior to 0"); // There should already have been an error when processing an empty EPSILON_I18N flag
   static_assert(I18n::NumberOfCountries > 0, "I18n::NumberOfCountries is not superior to 0"); // There should already have been an error when processing an empty EPSILON_COUNTRIES flag
@@ -69,6 +73,8 @@ private:
     m_idleBeforeSuspendSeconds(55),
     m_idleBeforeDimmingSeconds(45),
     m_brightnessShortcut(4),
+    m_extapp_write_permission(false),
+    m_extapp_icon(true),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
   I18n::Country m_country;
@@ -86,6 +92,8 @@ private:
   int m_idleBeforeSuspendSeconds;
   int m_idleBeforeDimmingSeconds;
   int m_brightnessShortcut;
+  bool m_extapp_write_permission;
+  bool m_extapp_icon;
   const KDFont * m_font;
 };
 
