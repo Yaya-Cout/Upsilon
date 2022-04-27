@@ -40,9 +40,10 @@ bool isExamModeAndFileNotExecutable(const TarHeader* tar) {
 }
 
 bool fileAtIndex(size_t index, File &entry) {
-  if (index == -1)
+  if (index == -1) {
     return false;
-  
+  }
+
   const TarHeader* tar = reinterpret_cast<const TarHeader*>(0x90200000);
   unsigned size = 0;
 
@@ -113,6 +114,40 @@ uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   return -1;
 }
 
+
+#else
+
+bool fileAtIndex(size_t index, File &entry) {
+  if (index != 0) {
+    return false;
+  }
+
+  entry.name = "Built-in";
+  entry.data = NULL;
+  entry.dataLength = 0;
+  entry.isExecutable = true;
+  entry.readable = true;
+  return true;
+}
+
+extern "C" void extapp_main(void);
+
+uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
+  extapp_main();
+  return 0;
+}
+
+#endif
+
+size_t numberOfFiles() {
+  File dummy;
+  size_t count;
+
+  for (count = 0; fileAtIndex(count, dummy); count++);
+
+  return count;
+}
+
 int indexFromName(const char *name) {
   File entry;
 
@@ -123,15 +158,6 @@ int indexFromName(const char *name) {
   }
 
   return -1;
-}
-
-size_t numberOfFiles() {
-  File dummy;
-  size_t count;
-
-  for (count = 0; fileAtIndex(count, dummy); count++);
-
-  return count;
 }
 
 bool executableAtIndex(size_t index, File &entry) {
@@ -152,11 +178,13 @@ bool executableAtIndex(size_t index, File &entry) {
       final_count++;
     }
   }
-  
   return false;
 }
 
 size_t numberOfExecutables() {
+  if (!GlobalPreferences::sharedGlobalPreferences()->extapp_showed()) {
+    return false;
+  }
   File dummy;
   size_t count;
   size_t final_count = 0;
@@ -167,50 +195,6 @@ size_t numberOfExecutables() {
 
   return final_count;
 }
-
-
-
-#else
-
-bool fileAtIndex(size_t index, File &entry) {
-  if (index != 0)
-    return false;
-  
-  entry.name = "Built-in";
-  entry.data = NULL;
-  entry.dataLength = 0;
-  entry.isExecutable = true;
-  entry.readable = true;
-  return true;
-}
-
-bool executableAtIndex(size_t index, File &entry) {
-  return fileAtIndex(index, entry);
-}
-
-size_t numberOfExecutables() {
-  return 1;
-}
-
-extern "C" void extapp_main(void);
-
-uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
-  extapp_main();
-  return 0;
-}
-
-int indexFromName(const char *name) {
-  if (strcmp(name, "Built-in") == 0)
-    return 0;
-  else
-    return -1;
-}
-
-size_t numberOfFiles() {
-  return 1;
-}
-
-#endif
 
 }
 }

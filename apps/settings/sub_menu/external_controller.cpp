@@ -18,7 +18,7 @@ ExternalController::ExternalController(Responder *parentResponder):
   m_contentView(&m_selectableTableView)
 {
   m_writeSwitchCell.setMessageFont(KDFont::LargeFont);
-  m_iconSwitchCell.setMessageFont(KDFont::LargeFont);
+  m_enabledSwitchCell.setMessageFont(KDFont::LargeFont);
 }
 
 bool ExternalController::handleEvent(Ion::Events::Event event) {
@@ -28,8 +28,8 @@ bool ExternalController::handleEvent(Ion::Events::Event event) {
     m_selectableTableView.reloadCellAtLocation(0, selectedRow());
     return true;
   } else if ((Ion::Events::OK == event || Ion::Events::EXE == event || Ion::Events::Right == event) && selectedRow() == 1) {
-    bool iconWasActivated = GlobalPreferences::sharedGlobalPreferences()->extapp_icon();
-    GlobalPreferences::sharedGlobalPreferences()->setExtapp_icon(!iconWasActivated);
+    bool extappWasShowed = GlobalPreferences::sharedGlobalPreferences()->extapp_showed();
+    GlobalPreferences::sharedGlobalPreferences()->setExtapp_showed(!extappWasShowed);
     m_selectableTableView.reloadCellAtLocation(0, selectedRow());
     return true;
   }
@@ -42,7 +42,7 @@ HighlightCell *ExternalController::reusableCell(int index, int type) {
       return &m_writeSwitchCell;
   }
   assert(index == 1);
-  return &m_iconSwitchCell;
+  return &m_enabledSwitchCell;
 }
 
 int ExternalController::reusableCellCount(int type) {
@@ -60,7 +60,7 @@ void ExternalController::willDisplayCellForIndex(HighlightCell *cell, int index)
   } else if (index == 1) {
     MessageTableCellWithSwitch *myCell = (MessageTableCellWithSwitch *)cell;
     SwitchView *mySwitch = (SwitchView *)myCell->accessoryView();
-    mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->extapp_icon());
+    mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->extapp_showed());
   }
 }
 

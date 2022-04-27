@@ -21,7 +21,7 @@ private:
   static constexpr int k_numberOfExplanationMessages = 3;
   SelectableViewWithMessages m_contentView;
   MessageTableCellWithSwitch m_writeSwitchCell;
-  MessageTableCellWithSwitch m_iconSwitchCell;
+  MessageTableCellWithSwitch m_enabledSwitchCell;
 };
 
 }
