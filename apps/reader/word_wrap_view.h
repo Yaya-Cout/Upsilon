@@ -12,9 +12,11 @@ struct BookSave {
   KDColor color;
 };
 
+class ReadBookController;
+
 class WordWrapTextView : public PointerTextView {
 public:
-  WordWrapTextView();
+  WordWrapTextView(ReadBookController * readBookController);
   void drawRect(KDContext * ctx, KDRect rect) const override;
   void setText(const char*, int length, bool isRichTextFile);
   void nextPage();
@@ -22,6 +24,10 @@ public:
   BookSave getBookSave() const;
   void setBookSave(BookSave save);
 private:
+  void richTextPreviousPage();
+  void plainTextPreviousPage();
+  void richTextDrawRect(KDContext * ctx, KDRect rect) const;
+  void plainTextDrawRect(KDContext * ctx, KDRect rect) const;
   bool updateTextColorForward(const char * colorStart) const;
   bool updateTextColorBackward(const char * colorStart) const;
   static const int k_margin = 10;
@@ -38,6 +44,7 @@ private:
    */
   int m_lastPagesOffsets[k_lastOffsetsBufferSize];
   int m_lastPagesOffsetsIndex;
+  ReadBookController * m_readBookController;
 };
 
 }
