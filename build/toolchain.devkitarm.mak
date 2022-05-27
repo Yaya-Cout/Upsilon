@@ -68,3 +68,5 @@ LDFLAGS += $(SFLAGS) $(LIBPATHS) $(LIBS) -lgcc
 
 # To debug linker scripts, add the following line
 # LDFLAGS += -Wl,-M
+
+SFLAGS += -Wnarrowing
