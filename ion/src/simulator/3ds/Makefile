@@ -38,3 +38,4 @@ sdl_simu_needs_to_be_removed += $(addprefix ion/src/simulator/shared/, \
 # Remove the dummy display (re-implemented) and the SDL simulator stuff.
 ion_src := $(filter-out $(sdl_simu_needs_to_be_removed),$(ion_src))
 
+SFLAGS += -Wnarrowing
