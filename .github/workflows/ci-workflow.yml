@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container: devkitpro/devkitppc:latest
     steps:
+      - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
       # - run: wget https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb -O /tmp/devkitpro-pacman.deb
       # - run: yes | sudo dpkg -i /tmp/devkitpro-pacman.deb
       - run: yes | sudo dkp-pacman -S --needed devkitARM 3dstools libctru
