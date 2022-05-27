@@ -25,7 +25,7 @@ jobs:
     steps:
       # - run: wget https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb -O /tmp/devkitpro-pacman.deb
       # - run: yes | sudo dpkg -i /tmp/devkitpro-pacman.deb
-      - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
+      # - run: yes | sudo dkp-pacman -Syu --needed devkitARM 3dstools libctru
       - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
       - run: echo ::set-env name=DEVKITARM::/opt/devkitpro/devkitARM
       - run: echo ::set-env name=PATH::$DEVKITPRO/tools/bin:$DEVKITARM/bin:$PATH
