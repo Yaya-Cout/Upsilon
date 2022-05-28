@@ -29,7 +29,7 @@ jobs:
       # - run: yes | sudo dpkg -i /tmp/devkitpro-pacman.deb
       - run: yes | sudo dkp-pacman -S --needed devkitARM 3dstools libctru
       - run: wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
-      - run: zip -o makerom-v0.18.3-ubuntu_x86_64.zip
+      - run: unzip makerom-v0.18.3-ubuntu_x86_64.zip
       - run: rm makerom-v0.18.3-ubuntu_x86_64.zip
       - run: ls -l
       - run: chmod +x ./makerom
