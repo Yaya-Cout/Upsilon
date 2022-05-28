@@ -28,18 +28,12 @@ jobs:
           submodules: true
       - run: sudo apt-get update
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config -y
-      # - run: wget https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb -O /tmp/devkitpro-pacman.deb
-      # - run: yes | sudo dpkg -i /tmp/devkitpro-pacman.deb
       - run: yes | sudo dkp-pacman -S --needed devkitARM 3dstools libctru
       - run: wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
       - run: unzip makerom-v0.18.3-ubuntu_x86_64.zip
       - run: rm makerom-v0.18.3-ubuntu_x86_64.zip
       - run: chmod +x ./makerom
       - run: echo "PATH=.:$PATH" >> $GITHUB_ENV
-      # - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
-      # - run: echo ::set-env name=DEVKITARM::/opt/devkitpro/devkitARM
-      # - run: echo ::set-env name=PATH::$DEVKITPRO/tools/bin:$DEVKITARM/bin:$PATH
-      - run: ls -la
       - run: make -j2 PLATFORM=simulator TARGET=3ds
       - run: make -j2 PLATFORM=simulator TARGET=3ds epsilon.cia
       - uses: actions/upload-artifact@master

@@ -62,7 +62,7 @@ int main(int argc, char * argv[]) {
     args.push("--language", Platform::languageCode());
   }
 
-#if !defined(__WIN32__) && !defined(__3DS__)
+#ifndef __WIN32__
   if (args.popFlag("--limit-stack-usage")) {
     // Limit stack usage
     /* TODO : Reduce stack memory cost in prime factorization to allow running
