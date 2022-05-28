@@ -40,7 +40,7 @@ jobs:
         with:
           submodules: true
       - run: make -j2 PLATFORM=simulator TARGET=3ds
-      - run: make -j2 PLATFORM=simulator TARGET=3ds epsilon.cia
+      - run: PATH=.:$PATH make -j2 PLATFORM=simulator TARGET=3ds epsilon.cia
       - uses: actions/upload-artifact@master
         with:
           name: epsilon-3ds.3dsx
@@ -49,8 +49,6 @@ jobs:
         with:
           name: epsilon-3ds.cia
           path: output/release/simulator/3ds/epsilon.cia
-    env:
-      PATH: .:$PATH
   android:
     runs-on: ubuntu-latest
     steps:
