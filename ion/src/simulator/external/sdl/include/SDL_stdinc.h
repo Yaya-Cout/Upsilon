@@ -309,8 +309,13 @@ typedef uint64_t Uint64;
 #endif
 #endif /* SDL_DISABLE_ANALYZE_MACROS */
 
-#define SDL_COMPILE_TIME_ASSERT(name, x)    \
-    static_assert(x)
+#ifndef __3DS__
+#define SDL_COMPILE_TIME_ASSERT(name, x)               \
+    typedef int SDL_dummy_ ## name[(x) * 2 - 1]
+#else
+#define SDL_COMPILE_TIME_ASSERT(name, x)               \
+    typedef int SDL_dummy_ ## name[0]
+#endif
 /** \cond */
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 SDL_COMPILE_TIME_ASSERT(uint8, sizeof(Uint8) == 1);
@@ -339,7 +344,7 @@ typedef enum
     DUMMY_ENUM_VALUE
 } SDL_DUMMY_ENUM;
 
-// SDL_COMPILE_TIME_ASSERT(enum, sizeof(SDL_DUMMY_ENUM) == sizeof(int));
+SDL_COMPILE_TIME_ASSERT(enum, sizeof(SDL_DUMMY_ENUM) == sizeof(int));
 #endif
 #endif /* DOXYGEN_SHOULD_IGNORE_THIS */
 /** \endcond */
