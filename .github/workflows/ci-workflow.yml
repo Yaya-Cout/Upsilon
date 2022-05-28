@@ -31,7 +31,7 @@ jobs:
       - run: wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
       - run: zip -o makerom-v0.18.3-ubuntu_x86_64.zip
       - run: rm makerom-v0.18.3-ubuntu_x86_64.zip
-      - run: chmod +x makerom
+      - run: chmod +x ./makerom
       # - run: echo ::set-env name=DEVKITPRO::/opt/devkitpro
       # - run: echo ::set-env name=DEVKITARM::/opt/devkitpro/devkitARM
       # - run: echo ::set-env name=PATH::$DEVKITPRO/tools/bin:$DEVKITARM/bin:$PATH
