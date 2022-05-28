@@ -309,10 +309,8 @@ typedef uint64_t Uint64;
 #endif
 #endif /* SDL_DISABLE_ANALYZE_MACROS */
 
-// #define SDL_COMPILE_TIME_ASSERT(name, x)               \
-    //    typedef int SDL_compile_time_assert_ ## name[(x) * 2 - 1]
-#define SDL_COMPILE_TIME_ASSERT(name, x)               \
-       typedef int SDL_compile_time_assert_ ## name[0]
+#define SDL_COMPILE_TIME_ASSERT(name, x)    \
+    static_assert(x)
 /** \cond */
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 SDL_COMPILE_TIME_ASSERT(uint8, sizeof(Uint8) == 1);
