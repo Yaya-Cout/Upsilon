@@ -1,16 +1,12 @@
 ion_src += $(addprefix ion/src/shared/dummy/, \
   backlight.cpp \
   board.cpp \
-  battery.cpp \
-  display.cpp \
   exam_mode.cpp \
   fcc_id.cpp \
-  led.cpp \
   pcb_version.cpp \
   power.cpp \
   serial_number.cpp \
   stack.cpp \
-  usb.cpp \
 )
 
 ion_src += $(addprefix ion/src/simulator/shared/, \
@@ -20,14 +16,9 @@ ion_src += $(addprefix ion/src/simulator/shared/, \
   crc32.cpp \
   display.cpp \
   events.cpp \
-  events_platform.cpp \
-  framebuffer.cpp \
-  keyboard.cpp \
   layout.cpp \
-  main.cpp \
   platform_info.cpp \
   random.cpp \
-  timing.cpp \
   window.cpp \
 )
 
