@@ -20,14 +20,21 @@ private:
   Layout popCommand();
 
   // Expressions
+  Layout popBinomCommand();
   Layout popCeilCommand();
   Layout popFloorCommand();
   Layout popFracCommand();
+  Layout popIntegralCommand();
+  Layout popIntsetCommand();
   Layout popLeftCommand();
+  Layout popOverrightarrowCommand();
+  Layout popOverlineCommand();
+  Layout popProductCommand();
   Layout popRightCommand();
   Layout popSqrtCommand();
+  Layout popSumCommand();
   Layout popSpaceCommand();
-  Layout popOverrightarrowCommand();
+
 
   //Symbols
   Layout popSymbolCommand(int SymbolIndex);
@@ -39,14 +46,22 @@ private:
   inline bool isCommandEnded(char c) const;
 
   // Expressions that require specific handling
+  static constexpr char const * k_binomCommand = "binom";
   static constexpr char const * k_ceilCommand = "ceil";
   static constexpr char const * k_floorCommand = "floor";
   static constexpr char const * k_fracCommand = "frac";
+  static constexpr char const * k_integralCommand = "int";
+  static constexpr char const * k_intsetCommand = "intset";
   static constexpr char const * k_leftCommand = "left";
-  static constexpr char const * k_rightCommand = "right";
-  static constexpr char const * k_sqrtCommand = "sqrt";
-  static constexpr char const * k_spaceCommand = "space";
   static constexpr char const * k_overrightArrowCommand = "overrightarrow";
+  static constexpr char const * k_overlineCommand = "overline";
+  static constexpr char const * k_productCommand = "prod";
+  static constexpr char const * k_rightCommand = "right";
+  static constexpr char const * k_spaceCommand = "space";
+  static constexpr char const * k_sqrtCommand = "sqrt";
+  static constexpr char const * k_sumCommand = "sum";
+
+  
 };
 
 }
