@@ -218,7 +218,7 @@ def list_keys(i18n_files: Dict[str, List[str]]) -> Dict[str, List[List[str]]]:
         i18n_files (Dict[str, List[str]]): I18n files list
 
     Returns:
-        Dict[str, List[str]]: The dictionnary of keys in the i18n files by
+        Dict[str, List[str]]: The dictionary of keys in the i18n files by
                               locale.
 
     """
