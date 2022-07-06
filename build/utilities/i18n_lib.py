@@ -19,7 +19,7 @@ class Key:
         self.line: str = line
         self.file: str = filename
         self.is_active: bool = True
-        self.valid: bool = True
+        self.is_valid: bool = True
         # Set the key and value as empty to avoid errors
         self.key = self.line
         self.value = ''
@@ -39,12 +39,12 @@ class Key:
         # Handle empty lines
         if self.line.strip() == '':
             self.is_active = False
-            self.valid = False
+            self.is_valid = False
             return
         # Handle lines with only a key
         if '=' not in self.line:
             self.is_active = False
-            self.valid = False
+            self.is_valid = False
             return
         # Split the line
         line_split = self.line.split('=')
@@ -214,11 +214,11 @@ class I18nData:
         for language, data in self.data.items():
             # Generate locale's files
             files: dict[str, str] = self.generate_locale_files(language, data)
-            print(files)
             # Write the files
             self.write_locale_files(files)
 
-    def generate_locale_files(self, language: str, data: list[Key]) -> dict[str, str]:
+    def generate_locale_files(self, language: str, data: list[Key]) ->\
+            dict[str, str]:
         """Generate the locale's files.
 
         Args:
@@ -271,7 +271,6 @@ class I18nData:
                 continue
             # Else, generate the line
             file_data += f"{key.key} = \"{key.value}\"\n"
-        print(file_data)
         # Return the file
         return file_data
 
@@ -299,8 +298,9 @@ class I18nData:
         logging.debug("Writing file %s", file)
         # Write the file
         with open(file, "w", encoding=self.encoding) as file_handle:
-            # Write the content
-            file_handle.write(content)
+            # Write the content if not in dry run
+            if not self.dry_run:
+                file_handle.write(content)
 
 
 def main():
@@ -315,7 +315,8 @@ def main():
         print("\t", language, keys[10].key, keys[10].value)
     # Sort the i18n data
     i18n.sort_i18n_data("fr")
-    # Print a part of the i18n data (the 10th key of each language), each key name should be the same
+    # Print a part of the i18n data (the 10th key of each language),
+    # each key name should be the same
     last_key: str = ""
     first_key: bool = True
     print("Part of the i18n data after sorting:")
