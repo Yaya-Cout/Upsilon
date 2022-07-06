@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Module to interact with the i18n files easily."""
 # Base imports
-import os
-import logging
 import contextlib
 import copy
+import logging
+import os
 
 
 class Key:
@@ -21,7 +21,6 @@ class Key:
         self.line: str = line
         self.file: str = filename
         self.is_active: bool = True
-        self.is_valid: bool = True
         # Set the key and value as empty to avoid errors
         self.key = self.line
         self.value = ''
@@ -41,12 +40,10 @@ class Key:
         # Handle empty lines
         if self.line.strip() == '':
             self.is_active = False
-            self.is_valid = False
             return
         # Handle lines with only a key
         if '=' not in self.line:
             self.is_active = False
-            self.is_valid = False
             return
         # Split the line
         line_split = self.line.split('=')
@@ -616,8 +613,7 @@ class I18nData:
             key_obj.value = value
             # Update the filename to match the locale
             key_obj.file = key_obj.get_filename(locale)
-        # Set the key as valid and active
-        key_obj.is_valid = True
+        # Set the key as active
         key_obj.is_active = True
         # Add the key
         self.data[locale].append(key_obj)
@@ -632,14 +628,8 @@ class Tests:
         i18n = I18nData()
         # Read the i18n raw data
         for language, keys in i18n.data.items():
-            # Iterate over the keys
-            for key in keys:
-                # Get the value
-                value = key.value
-                # Get the key name
-                key_name = key.key
-                # Get the locale
-                locale = key.language
+            # Do nothing because we just want to test the format of the data
+            pass
         # Sort the i18n data
         i18n.sort_i18n_data()
         # Read a part of the i18n data (the 10th key of each language),
