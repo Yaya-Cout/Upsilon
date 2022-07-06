@@ -346,6 +346,16 @@ class I18nData:
         """
         # Log the writing
         logging.debug("Writing file %s", file)
+        # Get the actual file
+        with open(file, "r", encoding=self.encoding) as file_handle:
+            # Get the file content
+            file_content = file_handle.read()
+        # Check if the file content is different
+        if file_content == content:
+            # Log the file is up to date
+            logging.debug("File %s is up to date", file)
+            # Return
+            return
         # Write the file if not in dry run
         if not self.dry_run:
             with open(file, "w", encoding=self.encoding) as file_handle:
@@ -403,7 +413,7 @@ class I18nData:
         # Remove the duplicates
         return list(set(keys_names))
 
-    def get_key(self, key: str, locale: str) -> Key:
+    def get_key(self, key_name: str, locale: str) -> Key:
         """Get the key.
 
         Args:
@@ -414,15 +424,27 @@ class I18nData:
             Key: The key.
         """
         # Log the loading
-        logging.debug("Getting key %s in %s", key, locale)
+        logging.debug("Getting key %s in %s", key_name, locale)
+        # If locale is all, return the first match
+        if locale == "all":
+            # Iterate over the languages
+            for language, _ in self.data.items():
+                # Try to get the key
+                try:
+                    # Return the key if found
+                    return self.get_key(key_name, language)
+                except KeyError:
+                    continue
+            # If no key was found, raise an error
+            raise KeyError(f"Key {key_name} not found in any language")
         # Print all the keys in the locale
         for key_iter in self.get_keys(locale=locale):
             # Check if the key is the same
-            if key_iter.key == key:
+            if key_iter.key == key_name:
                 # Return the key
                 return key_iter
         # Raise an error if the key is not found
-        raise KeyError(f"Key {key} not found in {locale}")
+        raise KeyError(f"Key {key_name} not found in {locale}")
 
     def get_key_index(self, key: str, locale="all") -> int:
         """Get the key index.
@@ -744,7 +766,7 @@ def main():
     # Initialise the logger
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format='%(asctime)s - %(levelname)s - %(message)s'
     )
     # Run the tests
     test_instance = Tests()
