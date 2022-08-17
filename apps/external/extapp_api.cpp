@@ -387,6 +387,30 @@ void extapp_setBrightness (uint8_t b) {
   Ion::Backlight::setBrightness(b);
 }
 
+int extapp_batteryLevel() {
+  return (int)Ion::Battery::level();
+}
+
+float extapp_batteryVoltage() {
+  return Ion::Battery::voltage();
+}
+
+bool extapp_batteryCharging() {
+  return Ion::Battery::isCharging();
+}
+
+int extapp_batteryPercentage() {
+  // We don't have a battery percentage, so compute it from the voltage
+  // TODO: Move it to Ion::Battery
+  int percentage = (extapp_batteryVoltage() - 3.6) * 166;
+  // Ensure that the percentage is between 0 and 100
+  if (percentage < 0)
+    percentage = 1;
+  if (percentage > 100)
+    percentage = 100;
+  return (int)percentage;
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -414,5 +438,9 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_inExamMode,
   (void (*)(void)) extapp_getBrightness,
   (void (*)(void)) extapp_setBrightness,
+  (void (*)(void)) extapp_batteryLevel,
+  (void (*)(void)) extapp_batteryVoltage,
+  (void (*)(void)) extapp_batteryCharging,
+  (void (*)(void)) extapp_batteryPercentage,
   (void (*)(void)) nullptr,
 };
