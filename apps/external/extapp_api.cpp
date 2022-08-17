@@ -377,6 +377,16 @@ bool extapp_inExamMode() {
   return GlobalPreferences::sharedGlobalPreferences()->isInExamMode();
 }
 
+uint8_t extapp_getBrightness () {
+  // TODO: Support dimming
+  return GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
+}
+
+void extapp_setBrightness (uint8_t b) {
+  GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(b);
+  Ion::Backlight::setBrightness(b);
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -402,5 +412,7 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_eraseSector,
   (void (*)(void)) extapp_writeMemory,
   (void (*)(void)) extapp_inExamMode,
+  (void (*)(void)) extapp_getBrightness,
+  (void (*)(void)) extapp_setBrightness,
   (void (*)(void)) nullptr,
 };
