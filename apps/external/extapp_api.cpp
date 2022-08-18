@@ -485,6 +485,10 @@ uint64_t extapp_getTime() {
   return seconds_since_2000(dt);
 }
 
+uint32_t extapp_random() {
+  return Ion::random();
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -521,5 +525,6 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_setRTCMode,
   (void (*)(void)) extapp_getRTCMode,
   (void (*)(void)) extapp_getTime,
+  (void (*)(void)) extapp_random,
   (void (*)(void)) nullptr,
 };
