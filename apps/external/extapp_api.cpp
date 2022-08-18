@@ -411,6 +411,80 @@ int extapp_batteryPercentage() {
   return (int)percentage;
 }
 
+DateTime extapp_getDateTime() {
+  Ion::RTC::DateTime dt = Ion::RTC::dateTime();
+  // TODO: This should not be necessary
+  return DateTime {
+    dt.tm_sec,
+    dt.tm_min,
+    dt.tm_hour,
+    dt.tm_mday,
+    dt.tm_mon,
+    dt.tm_year,
+    dt.tm_wday,
+  };
+}
+
+void extapp_setDateTime(DateTime dt) {
+  // TODO: Conversion should not be necessary (same format is used in the RTC), but casting is not working...
+  Ion::RTC::setDateTime(Ion::RTC::DateTime {
+    dt.tm_sec,
+    dt.tm_min,
+    dt.tm_hour,
+    dt.tm_mday,
+    dt.tm_mon,
+    dt.tm_year,
+    dt.tm_wday,
+  });
+}
+
+void extapp_setRTCMode(int mode) {
+  Ion::RTC::setMode((Ion::RTC::Mode)mode);
+}
+
+int extapp_getRTCMode() {
+  return (int)Ion::RTC::mode();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Code from MicroPython
+static const uint16_t days_since_jan1[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+bool is_leap_year(mp_uint_t year) {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+}
+
+// compute the day of the year, between 1 and 366
+// month should be between 1 and 12, date should start at 1
+uint64_t year_day(uint16_t year, uint8_t month, uint8_t date) {
+  mp_uint_t yday = days_since_jan1[month - 1] + date;
+  if (month >= 3 && is_leap_year(year)) {
+    yday += 1;
+  }
+  return yday;
+}
+
+// returns the number of seconds, as an integer, since 2000-01-01
+uint64_t seconds_since_2000(Ion::RTC::DateTime tm) {
+  return
+    tm.tm_sec
+    + tm.tm_min * 60
+    + tm.tm_hour * 3600
+    + (year_day(tm.tm_year, tm.tm_mon, tm.tm_mday) - 1
+      + ((tm.tm_year - 2000 + 3) / 4) // add a day each 4 years starting with 2001
+      - ((tm.tm_year - 2000 + 99) / 100) // subtract a day each 100 years starting with 2001
+      + ((tm.tm_year - 2000 + 399) / 400) // add a day each 400 years starting with 2001
+      ) * 86400
+    + (tm.tm_year - 2000) * 31536000;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+uint64_t extapp_getTime() {
+  Ion::RTC::DateTime dt = Ion::RTC::dateTime();
+  return seconds_since_2000(dt);
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -442,5 +516,10 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_batteryVoltage,
   (void (*)(void)) extapp_batteryCharging,
   (void (*)(void)) extapp_batteryPercentage,
+  (void (*)(void)) extapp_getDateTime,
+  (void (*)(void)) extapp_setDateTime,
+  (void (*)(void)) extapp_setRTCMode,
+  (void (*)(void)) extapp_getRTCMode,
+  (void (*)(void)) extapp_getTime,
   (void (*)(void)) nullptr,
 };
