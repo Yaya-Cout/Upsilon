@@ -502,6 +502,18 @@ const char * extapp_username() {
   return (const char *)Ion::username();
 }
 
+const char * extapp_getOS() {
+  return "Upsilon";
+}
+
+const char * extapp_getOSVersion() {
+  return Ion::upsilonVersion();
+}
+
+const char * extapp_getOSCommit() {
+  return Ion::patchLevel();
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -541,5 +553,8 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_random,
   (void (*)(void)) extapp_reloadTitleBar,
   (void (*)(void)) extapp_username,
+  (void (*)(void)) extapp_getOS,
+  (void (*)(void)) extapp_getOSVersion,
+  (void (*)(void)) extapp_getOSCommit,
   (void (*)(void)) nullptr,
 };
