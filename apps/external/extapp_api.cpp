@@ -514,6 +514,18 @@ const char * extapp_getOSCommit() {
   return Ion::patchLevel();
 }
 
+size_t extapp_storageSize() {
+  return Ion::Storage::k_storageSize;
+}
+
+size_t extapp_storageAvailable() {
+  return Ion::Storage::sharedStorage()->availableSize();
+}
+
+size_t extapp_storageUsed() {
+  return extapp_storageSize() - extapp_storageAvailable();
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -556,5 +568,8 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_getOS,
   (void (*)(void)) extapp_getOSVersion,
   (void (*)(void)) extapp_getOSCommit,
+  (void (*)(void)) extapp_storageSize,
+  (void (*)(void)) extapp_storageAvailable,
+  (void (*)(void)) extapp_storageUsed,
   (void (*)(void)) nullptr,
 };
