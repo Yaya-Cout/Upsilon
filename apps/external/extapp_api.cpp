@@ -212,6 +212,11 @@ static void reloadTitleBar() {
   AppsContainer::sharedAppsContainer()->updateBatteryState();
   AppsContainer::sharedAppsContainer()->reloadTitleBarView();
   AppsContainer::sharedAppsContainer()->redrawWindow();
+  // Refresh the display on simulator.
+  #ifndef DEVICE
+  Ion::Keyboard::scan();
+  #endif
+
 }
 
 void extapp_lockAlpha() {
@@ -489,6 +494,10 @@ uint32_t extapp_random() {
   return Ion::random();
 }
 
+void extapp_reloadTitleBar() {
+  reloadTitleBar();
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -526,5 +535,6 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_getRTCMode,
   (void (*)(void)) extapp_getTime,
   (void (*)(void)) extapp_random,
+  (void (*)(void)) extapp_reloadTitleBar,
   (void (*)(void)) nullptr,
 };
