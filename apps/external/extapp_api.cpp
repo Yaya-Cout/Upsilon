@@ -498,6 +498,10 @@ void extapp_reloadTitleBar() {
   reloadTitleBar();
 }
 
+const char * extapp_username() {
+  return (const char *)Ion::username();
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -536,5 +540,6 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_getTime,
   (void (*)(void)) extapp_random,
   (void (*)(void)) extapp_reloadTitleBar,
+  (void (*)(void)) extapp_username,
   (void (*)(void)) nullptr,
 };
