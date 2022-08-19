@@ -526,6 +526,30 @@ size_t extapp_storageUsed() {
   return extapp_storageSize() - extapp_storageAvailable();
 }
 
+struct Settings extapp_getSettings() {
+  Poincare::Preferences * poincare_preferences = Poincare::Preferences::sharedPreferences();
+  return Settings {
+    (uint8_t)poincare_preferences->angleUnit(),
+    (uint8_t)poincare_preferences->displayMode(),
+    poincare_preferences->numberOfSignificantDigits(),
+    (uint8_t)poincare_preferences->complexFormat(),
+    GlobalPreferences::sharedGlobalPreferences()->font() == KDFont::LargeFont ? true : false,
+  };
+}
+
+void extapp_setSettings(Settings settings) {
+  Poincare::Preferences * poincare_preferences = Poincare::Preferences::sharedPreferences();
+  poincare_preferences->setAngleUnit((Poincare::Preferences::AngleUnit)settings.angleUnit);
+  poincare_preferences->setDisplayMode((Poincare::Preferences::PrintFloatMode)settings.displayMode);
+  poincare_preferences->setNumberOfSignificantDigits(settings.numberOfSignificantDigits);
+  poincare_preferences->setComplexFormat((Poincare::Preferences::ComplexFormat)settings.complexFormat);
+  if (settings.largeFont) {
+    GlobalPreferences::sharedGlobalPreferences()->setFont(KDFont::LargeFont);
+  } else {
+    GlobalPreferences::sharedGlobalPreferences()->setFont(KDFont::SmallFont);
+  }
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -571,5 +595,7 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_storageSize,
   (void (*)(void)) extapp_storageAvailable,
   (void (*)(void)) extapp_storageUsed,
+  (void (*)(void)) extapp_getSettings,
+  (void (*)(void)) extapp_setSettings,
   (void (*)(void)) nullptr,
 };
