@@ -277,7 +277,7 @@ jobs:
     if: github.event.inputs.triggerMacos == 'yes' || github.event.inputs.triggerMacos == ''
     runs-on: macOS-latest
     steps:
-      - run: brew install Yaya-Cout/tap/epsilon-sdk
+      - run: brew install numworks/tap/epsilon-sdk
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
@@ -292,7 +292,7 @@ jobs:
     if: github.event.inputs.triggerIos == 'yes' || github.event.inputs.triggerIos == ''
     runs-on: macOS-latest
     steps:
-      - run: brew install Yaya-Cout/tap/epsilon-sdk
+      - run: brew install numworks/tap/epsilon-sdk
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
