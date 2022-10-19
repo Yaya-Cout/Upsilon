@@ -34,7 +34,6 @@ namespace rahat
             int reusableCellCount() const override;
             int numberOfRows() const override;
             void willDisplayCellForIndex(HighlightCell * cell, int index) override;
-            //void willDisplayCellAtLocation(HighlightCell * cell, int x, int y) override;
 
             void didBecomeFirstResponder() override;
     };

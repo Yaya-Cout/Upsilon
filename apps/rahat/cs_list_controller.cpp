@@ -15,7 +15,7 @@ namespace rahat
     }
 
     int CSListController::numberOfRows() const {
-        return sheetNb;
+        return sheetNb+NB_SETTINGS;
     }
 
     KDCoordinate CSListController::cellHeight() {
@@ -23,6 +23,8 @@ namespace rahat
     }
 
     HighlightCell* CSListController::reusableCell(int index) {
+        if (index == 0) return &m_setting_cell[0];
+        
         return &m_csList[index];
     }
 
@@ -31,20 +33,18 @@ namespace rahat
     }
 
     void CSListController::willDisplayCellForIndex(HighlightCell * cell, int index) {
-        MessageTableCell<>* myTextCell = static_cast<MessageTableCell<>*>(cell);
-        MessageTextView* myTextView = static_cast<MessageTextView*>(myTextCell->labelView());
-        myTextView->setText(sheets[index].name);
-        myTextCell->setMessageFont(KDFont::LargeFont);
+        
+        if (index == 0) {
+            MessageTableCellWithChevron<>* mySetting = static_cast<MessageTableCellWithChevron<>*>(cell);
+            MessageTextView* myTextView = static_cast<MessageTextView*>(mySetting->labelView());
+            myTextView->setMessage(I18n::Message::NewCS);
+        } else {
+            MessageTableCell<>* myTextCell = static_cast<MessageTableCell<>*>(cell);
+            MessageTextView* myTextView = static_cast<MessageTextView*>(myTextCell->labelView());
+            myTextView->setText(sheets[index-1].name);
+            myTextCell->setMessageFont(KDFont::LargeFont);
+        }
     }
-
-    /*void CSListController::willDisplayCellAtLocation (HighlightCell* cell, int x, int y){
-        x=0;
-        y=0;
-        ::rahat::CSListController::willDisplayCellAtLocation (cell, x, y);
-        MessageTableCellWithChevron<>* mySetting = static_cast<MessageTableCellWithChevron<>*>(cell);
-        MessageTextView* myTextView = static_cast<MessageTextView*>(mySetting->labelView());
-        myTextView->setMessage(I18n::Message::NewCS);
-    }*/
 
     void CSListController::didBecomeFirstResponder(){
         if (selectedRow() < 0){
