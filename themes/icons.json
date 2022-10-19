@@ -15,6 +15,7 @@
     "apps/settings/settings_icon.png" : "apps/settings_icon.png",
     "apps/solver/solver_icon.png" : "apps/solver_icon.png",
     "apps/statistics/stat_icon.png" : "apps/stat_icon.png",
+    "apps/rahat/rahat_icon.png" : "apps/rahat_icon.png",
     
     "apps/probability/images/binomial_icon.png" : "probability/binomial_icon.png",
     "apps/probability/images/calcul1_icon.png" : "probability/calcul1_icon.png",
