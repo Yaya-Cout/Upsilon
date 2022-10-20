@@ -1,3 +1,6 @@
 RahatApp = "Rahat"
 RahatAppCapital = "RAHAT"
 NewCS = "Nouvelle antisèche"
+Title = "Titre"
+Subject = "Sujet"
+Create = "Créer"

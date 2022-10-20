@@ -1,3 +1,6 @@
 RahatApp = "Rahat"
 RahatAppCapital = "RAHAT"
 NewCS = "Nieuw spiekbriefje"
+Title = "Titel"
+Subject = "Onderwerp"
+Create = "scheppen"

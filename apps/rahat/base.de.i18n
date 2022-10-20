@@ -1,3 +1,6 @@
 RahatApp = "Rahat"
 RahatAppCapital = "RAHAT"
 NewCS = "Neuer Spickzettel"
+Title = "Titel"
+Subject = "Thema"
+Create = "Schaffen"

@@ -2,6 +2,7 @@
 #include "apps/external/archive.h"
 #include "sheet.hpp"
 #include "setting.hpp"
+#include "create_cs_controller.h"
 
 namespace rahat
 {
@@ -23,6 +24,9 @@ namespace rahat
             static const int NB_SETTINGS = 2;
             rahat::Setting m_settings[NB_SETTINGS];
             MessageTableCellWithChevron<> m_setting_cell[NB_SETTINGS];
+
+            // Create a CS
+            CreateCS_Controller m_createCSCtrl;
             
         public:
             CSListController(Responder* parentResponder);
@@ -36,5 +40,7 @@ namespace rahat
             void willDisplayCellForIndex(HighlightCell * cell, int index) override;
 
             void didBecomeFirstResponder() override;
+
+            bool handleEvent(Ion::Events::Event event) override;
     };
 } // namespace rahat

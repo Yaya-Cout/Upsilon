@@ -1,13 +1,16 @@
 #include "cs_list_controller.hpp"
 #include "apps/i18n.h"
-#include <string>
 
 namespace rahat
 {
-    CSListController::CSListController(Responder* parentResponder) : ViewController(parentResponder), m_tableView(this, this, this){
-        sheets[0].name = "Coucou!!";
-        sheets[1].name = "Slay.";
-        sheetNb = 2;
+    CSListController::CSListController(Responder* parentResponder) :
+    ViewController(parentResponder),
+    m_tableView(this, this, this),
+    m_createCSCtrl(this){
+        sheets[0].name = "Foo";
+        sheets[1].name = "Bar";
+        sheets[2].name = "Baz";
+        sheetNb = 3;
     }
 
     View* CSListController::view(){
@@ -15,7 +18,7 @@ namespace rahat
     }
 
     int CSListController::numberOfRows() const {
-        return sheetNb+NB_SETTINGS;
+        return sheetNb+NB_SETTINGS-1;
     }
 
     KDCoordinate CSListController::cellHeight() {
@@ -52,5 +55,15 @@ namespace rahat
         }
 
         Container::activeApp()->setFirstResponder(&m_tableView);
+    }
+
+    bool CSListController::handleEvent(Ion::Events::Event event) {
+        if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
+            static_cast<StackViewController*>(parentResponder())->push(&m_createCSCtrl);
+            Container::activeApp()->setFirstResponder(&m_createCSCtrl);
+            return true;
+        }
+
+        return false;
     }
 } // namespace rahat

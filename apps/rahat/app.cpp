@@ -26,5 +26,9 @@ namespace rahat
         return &descriptor;
     }
 
-    App::App(Snapshot * snapshot) : ::App(snapshot, &m_CSListCtrl), m_CSListCtrl(nullptr){}
+    App::App(Snapshot * snapshot) :
+    ::App(snapshot, &m_CSListCtrl),
+    m_CSListCtrl(&m_stackViewCtrl),
+    m_stackViewCtrl(nullptr, &m_CSListCtrl)
+    {}
 } // namespace rahat

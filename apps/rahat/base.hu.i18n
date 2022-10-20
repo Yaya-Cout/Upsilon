@@ -1,3 +1,6 @@
 RahatApp = "Rahat"
 RahatAppCapital = "RAHAT"
 NewCS = "Új csalólap"
+Title = "Cím"
+Subject = "Téma"
+Create = "Teremt"

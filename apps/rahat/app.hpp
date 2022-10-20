@@ -26,7 +26,9 @@ namespace rahat {
 
         private:
             App(Snapshot* snapshot);
+
             CSListController m_CSListCtrl;
+            StackViewController m_stackViewCtrl;
     };
 
 }
