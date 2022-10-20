@@ -1,6 +1,8 @@
 #include "escher.h"
-#include "cs_list_controller.hpp"
+#include "cs_list_controller.h"
 
+#ifndef APP_H
+# define APP_H
 namespace rahat {
 
     class App : public ::App {
@@ -30,5 +32,6 @@ namespace rahat {
             CSListController m_CSListCtrl;
             StackViewController m_stackViewCtrl;
     };
-
 }
+
+#endif

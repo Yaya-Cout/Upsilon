@@ -4,6 +4,8 @@
 #include "setting.hpp"
 #include "create_cs_controller.h"
 
+#ifndef CS_LIST_CONTROLLER_HPP
+# define CS_LIST_CONTROLLER_HPP
 namespace rahat
 {
     class CSListController : public ViewController, public SimpleListViewDataSource, public SelectableTableViewDataSource {
@@ -44,3 +46,5 @@ namespace rahat
             bool handleEvent(Ion::Events::Event event) override;
     };
 } // namespace rahat
+
+#endif

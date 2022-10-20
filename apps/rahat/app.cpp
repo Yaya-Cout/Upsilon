@@ -1,4 +1,4 @@
-#include "app.hpp"
+#include "app.h"
 #include "rahat_icon.h"
 #include "apps/apps_container.h"
 #include "apps/i18n.h"

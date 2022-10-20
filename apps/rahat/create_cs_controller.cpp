@@ -18,19 +18,17 @@ namespace rahat
     }
 
     HighlightCell* CreateCS_Controller::reusableCell (int index) {
-        switch (index)
+        if (index == 0)
         {
-        case 0:
             return &m_title;
-
-        case 1:
+        }
+        else if (index == 1)
+        {
             return &m_subject;
-
-        case 2:
+        }
+        else
+        {
             return &m_create;
-        
-        default:
-            break;
         }
         return nullptr;
     }
