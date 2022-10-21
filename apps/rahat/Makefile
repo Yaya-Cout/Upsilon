@@ -1,4 +1,4 @@
-apps += rahat::App
+apps += Rahat::App
 app_headers += apps/rahat/app.h
 
 app_srahat_src = $(addprefix apps/rahat/,\
