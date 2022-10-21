@@ -3,32 +3,34 @@
 #include "apps/apps_container.h"
 #include "apps/i18n.h"
 
-namespace rahat
-{
-    I18n::Message App::Descriptor::name(){
-        return I18n::Message::RahatApp;
-    }
+namespace Rahat {
 
-    I18n::Message App::Descriptor::upperName(){
-        return I18n::Message::RahatAppCapital;
-    }
+I18n::Message App::Descriptor::name() {
+    return I18n::Message::RahatApp;
+}
 
-    const Image* App::Descriptor::icon(){
-        return ImageStore::RahatIcon;
-    }
+I18n::Message App::Descriptor::upperName() {
+    return I18n::Message::RahatAppCapital;
+}
 
-    App* App::Snapshot::unpack(Container* container){
-        return new (container->currentAppBuffer()) App(this);
-    }
+const Image * App::Descriptor::icon() {
+    return ImageStore::RahatIcon;
+}
 
-    App::Descriptor* App::Snapshot::descriptor(){
-        static App::Descriptor descriptor;
-        return &descriptor;
-    }
+App * App::Snapshot::unpack(Container * container) {
+    return new (container->currentAppBuffer()) App(this);
+}
 
-    App::App(Snapshot * snapshot) :
+App::Descriptor * App::Snapshot::descriptor() {
+    static App::Descriptor descriptor;
+    return &descriptor;
+}
+
+App::App(Snapshot * snapshot) :
     ::App(snapshot, &m_CSListCtrl),
     m_CSListCtrl(&m_stackViewCtrl),
     m_stackViewCtrl(nullptr, &m_CSListCtrl)
-    {}
-} // namespace rahat
+{
+}
+
+}
