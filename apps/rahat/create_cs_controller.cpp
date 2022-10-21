@@ -17,14 +17,11 @@ KDCoordinate CreateCS_Controller::cellHeight() {
 }
 
 HighlightCell * CreateCS_Controller::reusableCell(int index) {
-    if (index == 0)
-    {
+    if (index == 0) {
         return &m_title;
-    } else if (index == 1)
-    {
+    } else if (index == 1) {
         return &m_subject;
-    } else
-    {
+    } else {
         return &m_create;
     }
     return nullptr;
@@ -39,18 +36,15 @@ int CreateCS_Controller::numberOfRows() const {
 }
 
 void CreateCS_Controller::willDisplayCellForIndex(HighlightCell * cell, int index) {
-    if (index == 0)
-    {
+    if (index == 0) {
         MessageTableCellWithBuffer * myCell = static_cast<MessageTableCellWithBuffer *>(cell);
         MessageTextView * myView = static_cast<MessageTextView *>(myCell->labelView());
         myView->setMessage(I18n::Message::Title);
-    } else if (index == 1)
-    {
+    } else if (index == 1) {
         MessageTableCellWithBuffer * myCell = static_cast<MessageTableCellWithBuffer *>(cell);
         MessageTextView * myView = static_cast<MessageTextView *>(myCell->labelView());
         myView->setMessage(I18n::Message::Subject);
-    } else
-    {
+    } else {
         MessageTableCellWithChevron<> * myCell = static_cast<MessageTableCellWithChevron<>*>(cell);
         MessageTextView * myView = static_cast<MessageTextView *>(myCell->labelView());
         myView->setMessage(I18n::Message::Create);
