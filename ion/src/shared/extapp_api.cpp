@@ -15,12 +15,6 @@
 #include <ion/src/device/shared/drivers/flash.h>
 #endif
 
-#include <python/port/port.h>
-
-extern "C" {
-#include <python/port/mphalport.h>
-}
-
 uint64_t extapp_millis() {
   return Ion::Timing::millis();
 }
