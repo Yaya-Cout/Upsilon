@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <ion/external.h>
-#include "extapp_api.h"
-#include "../apps_container.h"
-#include "../global_preferences.h"
+#include <ion/extapp_api.h>
+#include "apps/apps_container.h"
+#include "apps/global_preferences.h"
 
 #ifdef DEVICE
 #include <ion/src/device/shared/drivers/reset.h>

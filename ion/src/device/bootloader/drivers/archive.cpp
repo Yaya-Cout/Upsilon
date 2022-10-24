@@ -1,5 +1,5 @@
 #include "apps/global_preferences.h"
-#include "extapp_api.h"
+#include <ion/extapp_api.h>
 #include <ion/external.h>
 
 #include <stdlib.h>
