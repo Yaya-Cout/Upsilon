@@ -16,6 +16,8 @@ i18n_files += $(call i18n_without_universal_for,home/base)
 # findable this way
 SFLAGS += -I$(BUILD_DIR)
 
+CXXFLAGS = -DAPPS_CONTAINER_SNAPSHOT_COUNT=$(snapshots_count)
+
 apps_layout = apps/home/apps_layout.csv
 
 $(eval $(call rule_for, \
