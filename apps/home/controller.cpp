@@ -15,10 +15,6 @@ extern "C" {
 #include <string.h>
 #endif
 
-#ifndef APPS_CONTAINER_SNAPSHOT_COUNT
-#error Missing snapshot count
-#endif
-
 namespace Home {
 
 Controller::ContentView::ContentView(Controller * controller, SelectableTableViewDataSource * selectionDataSource) :
@@ -155,7 +151,7 @@ bool Controller::handleEvent(Ion::Events::Event event) {
   }
 
   // Handle fast home navigation
-  for(int i = 0; i < std::min((int) (sizeof(home_fast_navigation_events) / sizeof(Ion::Events::Event)), APPS_CONTAINER_SNAPSHOT_COUNT); i++) {
+  for(int i = 0; i < std::min((int) (sizeof(home_fast_navigation_events) / sizeof(Ion::Events::Event)), this->numberOfIcons()); i++) {
     if (event == home_fast_navigation_events[i]) {
       int row = i / k_numberOfColumns;
       int column = i % k_numberOfColumns;
