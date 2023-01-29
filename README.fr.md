@@ -70,22 +70,25 @@ C'est fait! Vous pouvez aller à l'étape 2.
 
 <br>
 
-Installez tout d'abord des outils de développement.
+Installez toutes les dépendances grâce à cette commande:
 
 ```bash
-dnf install make automake gcc gcc-c++ kernel-devel
+dnf install make automake gcc gcc-c++ kernel-devel git ImageMagick libX11-devel libXext-devel freetype-devel libpng-devel libjpeg-devel pkg-config arm-none-eabi-gcc-cs arm-none-eabi-gcc-cs-c++
 ```
 
-Puis les pquets requis:
+<br>
 
+</details>
+
+<details>
+
+<summary>Nix/Nixos</summary>
+
+<br>
+
+Installez toutes les dépendances grâce à cette commande:
 ```bash
-dnf install git ImageMagick libX11-devel libXext-devel freetype-devel libpng-devel libjpeg-devel pkg-config
-```
-
-Et enfin la version pour ARM de GCC:
-
-```bash
-dnf install arm-none-eabi-gcc-cs arm-none-eabi-gcc-cs-c++
+nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext python3 imagemagick python310Packages.lz4 python310Packages.pypng python310Packages.pypng gcc-arm-embedded
 ```
 
 <br>
@@ -106,7 +109,7 @@ Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois intsallé, 
 brew install numworks/tap/epsilon-sdk
 ```
 
-Et toutes les dependances seront installées.
+Et toutes les dépendances seront installées.
 
 <br>
 
@@ -158,7 +161,7 @@ Votre version de windows doit être >= 1903.
 1. Apuyez simulatanément sur les touches "windows" et "x" puis cliquez sur "Powershell administrateur". Entrez ensuite ceci dans la nouvelle fenêtre:
 
 ```powershell
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux all /norestart
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 ```
 
 Cette commande active WSL
@@ -290,62 +293,98 @@ pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-p
 
 <details>
 
-<summary><b>Model bootloader (N0110)</b></summary>
+<summary><b>Model n0110</b></summary>
+
+Le bootloader vous permet d'installer firmware dans des "slots" séparés. Dans ce cas les applications externes ne pourront pas utiliser toute la mémoire mais la moitié. Si un seul slot est utilisé, le bootloader permettra d'utiliser toute la mémoire. Sans bootloader, les apps external peuvent utiliser toute la mémoire.
+
+<details>
+<summary>Bootloader</summary>
+
+Votre calculatrice doit être flashé avec le bootloader d'[Upsilon](https://getupsilon.web.app) ou d'[Omega](https://getomega.dev).
+Compilez avec:
 
 ```bash
 make clean
-make OMEGA_USERNAME="{Votre nom, maximum 15 caractères}" -j4
+make OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 ```
 
-Maintenant, lancez soit:
+Ensuite lancez soit:
 
 ```bash
 make epsilon.A_flash
 ```
 
-pour directement flasher la calculatrice, ou avec le flasher de slots du bootloader avec RESET, puis 4 (menu de flash), et 1 (flash des slots).
+pour flasher le slot actuel ou pour flasher par le flasher du booloader avec RESET, puis 4 (flash) et 1 (flash slots) pour flasher n'importe quel slot.
 
 <br>
 
 soit:
 
 ```bash
-make OMEGA_USERNAME="" binpack -j4
+make OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/).
-
+pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
 </details>
+
 
 <details>
 
-
-<summary><b>Model n0110 (obsolète, utilisez le bootloader à la place, pas de protection contre Epsilon)</b></summary>
+<summary>Model n0110 sans bootloader (obsolète, utilisez le bootloader à la place pour la protection contre Epsilon)</summary>
+Compilez avec:
 
 ```bash
 make MODEL=n0110 clean
-make MODEL=n0110 OMEGA_USERNAME="{Votre nom, maximum 15 caractères}" -j4
+make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 ```
 
-Maintenant, lancez soit:
+Ensuite lancez soit:
 
 ```bash
 make MODEL=n0110 epsilon_flash
 ```
 
-pour directement flasher la calculatrice après avoir appuyé simultanément sur `reset` et `6` et avoir branché la calculatrice à l'ordinateur.
-
+pour directement flasher la calculatrice après avoir appuyé simultanément sur `RESET` et `6` et avoir branché la calculatrice à l'ordinateur.
 <br>
 
 soit:
 
 ```bash
-make MODEL=n0110 OMEGA_USERNAME="" binpack -j4
+make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/).
+pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
+</details>
 
 </details>
+
+
+<details>
+
+<summary><b>Simulateur Natif</b></summary>
+
+Lancez cette commande:
+```bash
+make clean
+```
+Vous pouvez soit choisir d'utiliser la commmande qui détectera automatiquement votre plateforme:
+```bash
+make PLATFORM=simulator
+```
+Ou choisir une commande qui correspond à votre plateforme:
+```bash
+make PLATFORM=simulator TARGET=android
+make PLATFORM=simulator TARGET=ios
+make PLATFORM=simulator TARGET=macos
+make PLATFORM=simulator TARGET=web
+make PLATFORM=simulator TARGET=windows
+make PLATFORM=simulator TARGET=3ds
+```
+
+Vous trouverez les fichiers du simulateur dans `output/release/simulator/`.
+
+</details>
+
 
 <details>
 
