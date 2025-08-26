@@ -267,6 +267,16 @@ jobs:
         with:
           name: epsilon-binpack-bootloader.tgz
           path: output/release/device/bootloader/binpack-bootloader.tgz
+      - name: Update Nightly Release
+        uses: andelf/nightly-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: 'Upsilon-dev release $$'
+          prerelease: true
+          body: 'This is the latest Upsilon build from the upsilon-dev branch. This version is used by the website when flahsing the calculator with the "dev" version'
+          files: |
+            ./output/release/device/bootloader/binpack/*
   windows:
     runs-on: windows-latest
     defaults:
