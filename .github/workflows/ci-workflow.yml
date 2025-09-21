@@ -172,6 +172,8 @@ jobs:
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 output/release/device/n0100/flasher.light.bin
       - run: mv output/release/device/n0100/flasher.light.bin final-output/flasher.light.bin
+      - run: make -j2 MODEL=n0100 output/release/device/n0100/flasher.verbose.bin
+      - run: mv output/release/device/n0100/flasher.verbose.bin final-output/flasher.verbose.bin
       - run: find final-output/ -type f -exec bash -c "shasum -a 256 -b {} > {}.sha256" \;
       - run: tar cvfz binpack-n0100.tgz final-output/*
       - uses: actions/upload-artifact@v4
@@ -208,6 +210,7 @@ jobs:
       # - run: make -j2 MODEL=n0110 bench.flash.dfu
       - run: make -j2 MODEL=n0110 binpack
       - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack-n0110.tgz
+      - run: cp output/release/device/n0110/flasher.verbose.bin output/release/device/n0110/binpack/
       - run: cd output/release/device/n0110 && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
       - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack/binpack.tgz
       - uses: actions/upload-artifact@v4
