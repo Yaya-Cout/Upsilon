@@ -180,6 +180,12 @@ jobs:
         with:
           name: epsilon-binpack-n0100.tgz
           path: binpack-n0100.tgz
+      - uses: actions/checkout@v5
+        with:
+          repository: Yaya-Cout/Upsilon-binfiles-tests
+          ref: 'main'
+          token:  ${{ secrets.PAT_UPSILON_BINFILES }}
+          path: 'binfiles'
       - run: |
           cp -r final-output/* binfiles/binaries/dev/n100
           cd binfiles
@@ -217,6 +223,12 @@ jobs:
         with:
           name: epsilon-binpack-n0110.tgz
           path: output/release/device/n0110/binpack-n0110.tgz
+      - uses: actions/checkout@v5
+        with:
+          repository: Yaya-Cout/Upsilon-binfiles-tests
+          ref: 'main'
+          token:  ${{ secrets.PAT_UPSILON_BINFILES }}
+          path: 'binfiles'
       # TODO: Handle git conflicts using rebase
       - run: |
           cp -r output/release/device/n110/binpack/* binfiles/binaries/dev/n110
