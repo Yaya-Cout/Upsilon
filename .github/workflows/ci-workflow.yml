@@ -231,7 +231,7 @@ jobs:
           path: 'binfiles'
       # TODO: Handle git conflicts using rebase
       - run: |
-          cp -r output/release/device/n110/binpack/* binfiles/binaries/dev/n110
+          cp -r output/release/device/n0110/binpack/* binfiles/binaries/dev/n110
           cd binfiles
           git add -A
           git config --global user.email "ci@github.com"
