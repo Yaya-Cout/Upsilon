@@ -148,36 +148,36 @@ jobs:
       - run: mkdir final-output
       - run: make -j2 MODEL=n0100 EPSILON_I18N=en output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=en output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.en.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.en.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       # We need to duplicate make to work around i18n generator race condition in Makefile leading to inconsistent incremental rebuilds
       - run: make -j2 MODEL=n0100 EPSILON_I18N=fr output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=fr output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.fr.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.fr.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=nl output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=nl output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.nl.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.nl.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=pt output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=pt output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.pt.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.pt.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=it output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=it output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.it.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.it.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=de output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=de output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.de.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.de.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=es output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=es output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.es.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.es.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 EPSILON_I18N=hu output/release/device/n0100/epsilon.onboarding.two_binaries
       - run: make -j2 MODEL=n0100 EPSILON_I18N=hu output/release/device/n0100/epsilon.onboarding.two_binaries
-      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.hu.bin
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.hu.internal.bin
       - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
       - run: make -j2 MODEL=n0100 output/release/device/n0100/flasher.light.bin
       - run: mv output/release/device/n0100/flasher.light.bin final-output/flasher.light.bin
