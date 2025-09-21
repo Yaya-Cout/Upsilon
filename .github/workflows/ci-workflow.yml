@@ -206,27 +206,39 @@ jobs:
       - run: make -j2 MODEL=n0110 epsilon.onboarding.beta.dfu
       - run: make -j2 MODEL=n0110 flasher.light.dfu
       - run: make -j2 MODEL=n0110 flasher.verbose.dfu
-      # We  don't need bench as it is used only in factory
-      # - run: make -j2 bench.ram.dfu
-      # - run: make -j2 bench.flash.dfu
+      - run: make -j2 MODEL=n0110 flasher.verbose.bin
+      - run: make -j2 MODEL=n0110 bench.ram.dfu
+      # - run: make -j2 MODEL=n0110 bench.flash.dfu
       - run: make -j2 MODEL=n0110 binpack
       - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack-n0110.tgz
-      - id: 'auth'
-        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-      - id: 'upload-directory'
-        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
-        uses: 'google-github-actions/upload-cloud-storage@v0'
-        with:
-          path: 'output/release/device/n0110/binpack/'
-          destination: 'upsilon-binfiles.appspot.com/dev/n110/'
-          parent: false
+      - run: cd output/release/device/n0110 && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
+      - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack/binpack.tgz
+      # - id: 'auth'
+      #   if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+      #   uses: 'google-github-actions/auth@v0'
+      #   with:
+      #     credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      # - id: 'upload-directory'
+      #   if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+      #   uses: 'google-github-actions/upload-cloud-storage@v0'
+      #   with:
+      #     path: 'output/release/device/n0110/binpack/'
+      #     destination: 'upsilon-binfiles.appspot.com/dev/n110/'
+      #     parent: false
       - uses: actions/upload-artifact@v4
         with:
           name: epsilon-binpack-n0110.tgz
           path: output/release/device/n0110/binpack-n0110.tgz
+                # TODO: Handle git conflicts using rebase
+      - run: |
+          cp -r output/release/device/n110/binpack/* binfiles/binaries/dev/n110
+          cd binfiles
+          git add -A
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Upsilon CI"
+          git pull
+          git commit -m "Update from CI"
+          git push
   bootloader:
     runs-on: ubuntu-latest
     steps:
@@ -251,18 +263,6 @@ jobs:
       - run: cp output/release/device/n0110/bootloader.bin output/release/device/bootloader/
       - run: cd output/release/device/bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
       - run: cd output/release/device/bootloader && tar cvfz binpack-bootloader.tgz binpack/*
-      # - id: 'auth'
-      #   if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
-      #   uses: 'google-github-actions/auth@v0'
-      #   with:
-      #     credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-      # - id: 'upload-directory'
-      #   if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
-      #   uses: 'google-github-actions/upload-cloud-storage@v0'
-      #   with:
-      #     path: 'output/release/device/bootloader/binpack/'
-      #     destination: 'upsilon-binfiles.appspot.com/dev/n110/'
-      #     parent: false
       - uses: actions/upload-artifact@v4
         with:
           name: epsilon-binpack-bootloader.tgz
@@ -273,12 +273,14 @@ jobs:
           ref: 'main'
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
+      # TODO: Handle git conflicts using rebase
       - run: |
-          cp -r output/release/device/bootloader/binpack/ binfiles
+          cp -r output/release/device/bootloader/binpack/* binfiles/binaries/dev/n110
           cd binfiles
           git add -A
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Upsilon CI"
+          git pull
           git commit -m "Update from CI"
           git push
   windows:
