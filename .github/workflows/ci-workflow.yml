@@ -269,7 +269,7 @@ jobs:
           path: output/release/device/bootloader/binpack-bootloader.tgz
       - uses: actions/checkout@v5
         with:
-          repository: https://github.com/Yaya-Cout/Upsilon-binfiles-tests/
+          repository: Yaya-Cout/Upsilon-binfiles-tests
           ref: 'main'
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
