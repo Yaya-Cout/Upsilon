@@ -237,14 +237,14 @@ jobs:
       - uses: actions/checkout@v5
         with:
           submodules: 'recursive'
-      - run: make -j2 MODEL=n0110 bootloader
-      - run: make -j2 epsilon.A.dfu epsilon.B.dfu
-      - run: make -j2 epsilon.onboarding.A.dfu
-      - run: make -j2 epsilon.onboarding.B.dfu
-      - run: make -j2 epsilon.onboarding.update.A.dfu
-      - run: make -j2 epsilon.onboarding.update.B.dfu
-      - run: make -j2 epsilon.onboarding.beta.A.dfu
-      - run: make -j2 epsilon.onboarding.beta.B.dfu
+      # - run: make -j2 MODEL=n0110 bootloader
+      # - run: make -j2 epsilon.A.dfu epsilon.B.dfu
+      # - run: make -j2 epsilon.onboarding.A.dfu
+      # - run: make -j2 epsilon.onboarding.B.dfu
+      # - run: make -j2 epsilon.onboarding.update.A.dfu
+      # - run: make -j2 epsilon.onboarding.update.B.dfu
+      # - run: make -j2 epsilon.onboarding.beta.A.dfu
+      # - run: make -j2 epsilon.onboarding.beta.B.dfu
       - run: make -j2 binpack
       - run: cp output/release/device/bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/bootloader/binpack-bootloader.tgz
       - run: cp output/release/device/n0110/bootloader.bin output/release/device/bootloader/binpack/
@@ -274,7 +274,7 @@ jobs:
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
       - run: |
-          cp output/release/device/bootloader/binpack/ binfiles
+          cp -r output/release/device/bootloader/binpack/ binfiles
           cd binfiles
           git add -a
           git commit -m "Update from CI"
