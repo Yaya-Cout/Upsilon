@@ -276,7 +276,7 @@ jobs:
       - run: |
           cp -r output/release/device/bootloader/binpack/ binfiles
           cd binfiles
-          git add -a
+          git add -A
           git commit -m "Update from CI"
   windows:
     runs-on: windows-latest
