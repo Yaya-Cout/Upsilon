@@ -277,7 +277,10 @@ jobs:
           cp -r output/release/device/bootloader/binpack/ binfiles
           cd binfiles
           git add -A
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Upsilon CI"
           git commit -m "Update from CI"
+          git push
   windows:
     runs-on: windows-latest
     defaults:
