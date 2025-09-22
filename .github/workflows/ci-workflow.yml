@@ -195,7 +195,9 @@ jobs:
           ref: 'main'
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
-      - run: |
+      - name: Upload binary files to website
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'Yaya-Cout/Upsilon'}}
+        run: |
           cp -r final-output/* binfiles/binaries/dev/n100
           cd binfiles
           git add -A
@@ -239,7 +241,9 @@ jobs:
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
       # TODO: Handle git conflicts using rebase
-      - run: |
+      - name: Upload binary files to website
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'Yaya-Cout/Upsilon'}}
+        run: |
           cp -r output/release/device/n0110/binpack/* binfiles/binaries/dev/n110
           cd binfiles
           git add -A
@@ -283,7 +287,9 @@ jobs:
           token:  ${{ secrets.PAT_UPSILON_BINFILES }}
           path: 'binfiles'
       # TODO: Handle git conflicts using rebase
-      - run: |
+      - name: Upload binary files to website
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'Yaya-Cout/Upsilon'}}
+        run: |
           cp -r output/release/device/bootloader/binpack/* binfiles/binaries/dev/n110
           cd binfiles
           git add -A
